@@ -72,6 +72,7 @@ export default {
       fileManager: 'Gerenciamento de Arquivos',
       flow: 'Agente',
       search: 'Buscar',
+      assistant: 'Assistente de escritório inteligente',
     },
     knowledgeList: {
       welcome: 'Bem-vindo de volta',

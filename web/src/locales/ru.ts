@@ -99,6 +99,7 @@ export default {
       search: 'Поиск',
       welcome: 'Добро пожаловать в',
       dataset: 'Датасет',
+      assistant: 'Умный офисный помощник',
     },
     knowledgeList: {
       welcome: 'С возвращением',

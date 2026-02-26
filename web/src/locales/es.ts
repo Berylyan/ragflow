@@ -64,6 +64,7 @@ export default {
       fileManager: 'Gestión de archivos',
       flow: 'Agente',
       search: 'Buscar',
+      assistant: 'Asistente de oficina inteligente',
     },
     knowledgeList: {
       welcome: 'Bienvenido de nuevo',

@@ -69,6 +69,7 @@ export default {
       cloud: 'Unggahan Cloud',
       flow: 'Agen',
       search: 'Cari',
+      assistant: 'Asisten Kantor Cerdas',
     },
     knowledgeList: {
       welcome: 'Selamat datang kembali',

@@ -265,7 +265,7 @@ export function FilesTable({
   return (
     <>
       <div className="w-full">
-        <Table rootClassName="max-h-[calc(100vh-242px)] overflow-auto">
+        <Table rootClassName="max-h-[calc(100vh-486px)] overflow-auto">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

@@ -107,6 +107,7 @@ export default {
       dataset: 'Datensatz',
       memories: 'Gedächtnis',
       Memories: 'Gedächtnis',
+      assistant: 'Intelligenter Büroassistent',
     },
     memories: {
       llmTooltip:

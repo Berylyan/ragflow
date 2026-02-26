@@ -1,7 +1,7 @@
 import { CardContainer } from '@/components/card-container';
 import { EmptyCardType } from '@/components/empty/constant';
 import { EmptyAppCard } from '@/components/empty/empty';
-import ListFilterBar from '@/components/list-filter-bar';
+import { RootListFilterBar } from '@/components/list-filter-bar';
 import { RenameDialog } from '@/components/rename-dialog';
 import { Button } from '@/components/ui/button';
 import { RAGFlowPagination } from '@/components/ui/ragflow-pagination';
@@ -69,7 +69,7 @@ export default function SearchList() {
       {(!list?.data?.search_apps?.length ||
         list?.data?.search_apps?.length <= 0) &&
         !searchString && (
-          <div className="flex w-full items-center justify-center h-[calc(100vh-164px)]">
+          <div className="flex w-full items-center justify-center h-[calc(100vh-152px)]">
             <EmptyAppCard
               showIcon
               size="large"
@@ -82,29 +82,32 @@ export default function SearchList() {
         )}
       {(!!list?.data?.search_apps?.length || searchString) && (
         <>
-          <div className="px-8 pt-8">
-            <ListFilterBar
-              icon="searches"
+          <div className="px-14">
+            <RootListFilterBar
               title={t('searchApps')}
               showFilter={false}
               searchString={searchString}
               onSearchChange={handleInputChange}
+              className="px-12"
+              icon={'/search_logo.png'}
             >
               <Button
                 variant={'default'}
                 onClick={() => {
                   openCreateModalFun();
                 }}
+                className="px-4 py-[16px]"
               >
                 <Plus className="h-4 w-4" />
                 {t('createSearch')}
               </Button>
-            </ListFilterBar>
+            </RootListFilterBar>
           </div>
+
           {(!list?.data?.search_apps?.length ||
             list?.data?.search_apps?.length <= 0) &&
             searchString && (
-              <div className="flex w-full items-center justify-center h-[calc(100vh-164px)]">
+              <div className="flex w-full items-center justify-center h-[calc(100vh-395px)]">
                 <EmptyAppCard
                   showIcon
                   size="large"
@@ -116,7 +119,7 @@ export default function SearchList() {
               </div>
             )}
           <div className="flex-1">
-            <CardContainer className="max-h-[calc(100dvh-280px)] overflow-auto px-8">
+            <CardContainer className="max-h-[calc(100dvh-475px)] overflow-auto px-14">
               {list?.data.search_apps.map((x) => {
                 return (
                   <SearchCard
@@ -131,7 +134,7 @@ export default function SearchList() {
             </CardContainer>
           </div>
           {list?.data.total && list?.data.total > 0 && (
-            <div className="px-8 mb-4">
+            <div className="px-14 mb-4">
               <RAGFlowPagination
                 {...pick(pagination, 'current', 'pageSize')}
                 // total={pagination.total}

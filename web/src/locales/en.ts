@@ -68,8 +68,12 @@ export default {
     login: {
       loginTitle: 'Sign in to your account',
       signUpTitle: 'Create an account',
+      welcomeToLogin: 'Welcome to Sign in',
+      welcomeToSignUp: 'Welcome to Sign up',
       login: 'Sign in',
       signUp: 'Sign up',
+      gotoLogin: 'Sign in',
+      gotoSignUp: 'Sign up',
       loginDescription: 'We’re so excited to see you again!',
       registerDescription: 'Glad to have you on board!',
       emailLabel: 'Email',

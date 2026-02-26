@@ -42,11 +42,26 @@ export function Banner() {
 export function NextBanner() {
   const { t } = useTranslation();
   return (
-    <section className="text-5xl pt-10 pb-14 font-bold px-10">
-      <span className="text-text-primary">{t('header.welcome')}</span>
-      <span className="pl-3 text-transparent bg-clip-text  bg-gradient-to-l from-[#40EBE3] to-[#4A51FF]">
-        RAGFlow
-      </span>
-    </section>
+    <div className="flex items-end justify-center py-10 gap-2">
+      <img
+        src={'/home_logo.png'}
+        alt="home_logo"
+        className="w-56 aspect-[1.37] object-cover"
+      />
+      <div className="mx-2 mb-4">
+        <h1 className=" text-[clamp(2rem,5vw,3.1rem)] font-bold text-gray-800 leading-tight">
+          {t('header.assistant')}
+          <img
+            src={'/home_name.png'}
+            alt="海小豹"
+            className="inline-block align-text-bottom h-15 w-auto mx-1 px-2"
+          />
+        </h1>
+
+        <p className="text-gray-600 text-md mt-2 max-w-2xl">
+          我能帮你管理海量资料、起草公文方案、精准检索信息，做你最靠谱的办公搭档！
+        </p>
+      </div>
+    </div>
   );
 }

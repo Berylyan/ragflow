@@ -109,6 +109,7 @@ export default {
       welcome: 'Benvenuto su',
       dataset: 'Dataset',
       Memories: 'Memoria',
+      assistant: 'Assistente di ufficio intelligente',
     },
     memory: {
       memory: 'Memoria',

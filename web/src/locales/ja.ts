@@ -70,6 +70,7 @@ export default {
       fileManager: 'ファイル管理',
       flow: 'エージェント',
       search: '検索',
+      assistant: 'インテリジェントオフィスアシスタント',
     },
     knowledgeList: {
       welcome: 'お帰りなさい',

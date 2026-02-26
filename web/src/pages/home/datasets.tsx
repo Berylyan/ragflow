@@ -9,7 +9,6 @@ import { useFetchNextKnowledgeListByPage } from '@/hooks/use-knowledge-request';
 import { useTranslation } from 'react-i18next';
 import { DatasetCard } from '../datasets/dataset-card';
 import { useRenameDataset } from '../datasets/use-rename-dataset';
-import { SeeAllAppCard } from './application-card';
 
 export function Datasets() {
   const { t } = useTranslation();
@@ -26,11 +25,36 @@ export function Datasets() {
 
   return (
     <section>
-      <h2 className="text-2xl font-semibold mb-6 flex gap-2.5 items-center">
-        {/* <IconFont name="data" className="size-8"></IconFont> */}
-        <HomeIcon name="datasets" width={'32'} />
-        {t('header.dataset')}
-      </h2>
+      <section className="mb-4 flex justify-between items-center ">
+        <h2 className="text-xl font-semibold flex gap-2 items-center">
+          {/* <IconFont name="data" className="size-8"></IconFont> */}
+          <HomeIcon name="datasets" width={'32'} />
+          {t('header.dataset')}
+        </h2>
+        {kbs?.length > 0 && (
+          <button
+            className="
+              px-3 
+              py-1 
+              border 
+              border-gray-300 
+              rounded-full 
+              text-gray-400 
+              text-sm 
+              flex 
+              items-center 
+              gap-1 
+              hover:bg-gray-100 
+              transition-colors
+              
+            "
+            onClick={() => navigateToDatasetList({ isCreate: false })}
+          >
+            MORE <span>→</span>
+          </button>
+        )}
+      </section>
+
       <div className="">
         {loading ? (
           <div className="flex-1">
@@ -40,20 +64,13 @@ export function Datasets() {
           <>
             {kbs?.length > 0 && (
               <CardSineLineContainer>
-                {kbs
-                  ?.slice(0, 6)
-                  .map((dataset) => (
-                    <DatasetCard
-                      key={dataset.id}
-                      dataset={dataset}
-                      showDatasetRenameModal={showDatasetRenameModal}
-                    ></DatasetCard>
-                  ))}
-                {
-                  <SeeAllAppCard
-                    click={() => navigateToDatasetList({ isCreate: false })}
-                  ></SeeAllAppCard>
-                }
+                {kbs?.slice(0, 6).map((dataset) => (
+                  <DatasetCard
+                    key={dataset.id}
+                    dataset={dataset}
+                    showDatasetRenameModal={showDatasetRenameModal}
+                  ></DatasetCard>
+                ))}
               </CardSineLineContainer>
             )}
             {kbs?.length <= 0 && (

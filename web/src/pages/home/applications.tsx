@@ -2,13 +2,12 @@ import { CardSineLineContainer } from '@/components/card-singleline-container';
 import { EmptyCardType } from '@/components/empty/constant';
 import { EmptyAppCard } from '@/components/empty/empty';
 import { HomeIcon } from '@/components/svg-icon';
-import { Segmented, SegmentedValue } from '@/components/ui/segmented';
+import { SegmentedValue } from '@/components/ui/segmented';
 import { Routes } from '@/routes';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { Agents } from './agent-list';
-import { SeeAllAppCard } from './application-card';
 import { ChatList } from './chat-list';
 import { MemoryList } from './memory-list';
 import { SearchList } from './search-list';
@@ -63,23 +62,38 @@ export function Applications() {
 
   return (
     <section className="mt-12">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-semibold flex gap-2.5">
+      <section className="mb-4 flex justify-between items-center ">
+        <h2 className="text-xl font-semibold flex gap-2">
           <HomeIcon
             name={`${IconMap[val as keyof typeof IconMap]}`}
             width={'32'}
           />
           {options.find((x) => x.value === val)?.label}
         </h2>
-        <Segmented
-          options={options}
-          value={val}
-          onChange={handleChange}
-          buttonSize="xl"
-          // className="bg-bg-card border border-border-button rounded-lg"
-          // activeClassName="bg-text-primary border-none rounded-lg"
-        ></Segmented>
-      </div>
+        {listLength > 0 && (
+          <button
+            className="
+              px-3 
+              py-1 
+              border 
+              border-gray-300 
+              rounded-full 
+              text-gray-400 
+              text-sm 
+              flex 
+              items-center 
+              gap-1 
+              hover:bg-gray-100 
+              transition-colors
+              
+            "
+            onClick={() => handleNavigate({ isCreate: false })}
+          >
+            MORE <span>→</span>
+          </button>
+        )}
+      </section>
+
       {/* <div className="flex flex-wrap gap-4"> */}
       <CardSineLineContainer>
         {val === Routes.Agents && (
@@ -105,11 +119,6 @@ export function Applications() {
             setListLength={(length: number) => setListLength(length)}
             setLoading={(loading: boolean) => setLoading(loading)}
           ></MemoryList>
-        )}
-        {listLength > 0 && (
-          <SeeAllAppCard
-            click={() => handleNavigate({ isCreate: false })}
-          ></SeeAllAppCard>
         )}
       </CardSineLineContainer>
       {listLength <= 0 && !loading && (

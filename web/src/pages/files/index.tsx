@@ -1,6 +1,6 @@
 import { BulkOperateBar } from '@/components/bulk-operate-bar';
 import { FileUploadDialog } from '@/components/file-upload-dialog';
-import ListFilterBar from '@/components/list-filter-bar';
+import { RootListFilterBar } from '@/components/list-filter-bar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -87,13 +87,14 @@ export default function Files() {
   );
 
   return (
-    <section className="p-8">
-      <ListFilterBar
+    <section className="py-2.5 px-14">
+      <RootListFilterBar
+        title={t('header.fileManager')}
         leftPanel={leftPanel}
         searchString={searchString}
         onSearchChange={handleInputChange}
         showFilter={false}
-        icon={'file'}
+        icon={'/filemanager_logo.png'}
       >
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -112,10 +113,11 @@ export default function Files() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </ListFilterBar>
+      </RootListFilterBar>
       {!rowSelectionIsEmpty && (
         <BulkOperateBar list={list} count={selectedCount}></BulkOperateBar>
       )}
+
       <FilesTable
         files={files}
         total={total}

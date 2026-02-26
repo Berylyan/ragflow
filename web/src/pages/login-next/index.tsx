@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import Spotlight from '@/components/spotlight';
 import { Button, ButtonLoading } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -28,7 +27,6 @@ import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { BgSvg } from './bg';
 import FlipCard3D from './card';
 import './index.less';
 
@@ -132,55 +130,45 @@ const Login = () => {
 
   return (
     <>
-      <Spotlight opcity={0.4} coverage={60} color={'rgb(128, 255, 248)'} />
-      <Spotlight
-        opcity={0.3}
-        coverage={12}
-        X={'10%'}
-        Y={'-10%'}
-        color={'rgb(128, 255, 248)'}
-      />
-      <Spotlight
-        opcity={0.3}
-        coverage={12}
-        X={'90%'}
-        Y={'-10%'}
-        color={'rgb(128, 255, 248)'}
-      />
-      <div className=" h-[inherit] relative overflow-auto">
-        <BgSvg isPaused />
-
-        <div className="absolute top-3 flex flex-col items-center mb-12 w-full text-text-primary">
-          <div className="flex items-center mb-4 w-full pl-10 pt-10 ">
-            <div className="w-12 h-12 p-2 rounded-lg flex items-center justify-center mr-3">
-              <img
-                src={'/logo.svg'}
-                alt="logo"
-                className="size-8 mr-[12] cursor-pointer"
-              />
-            </div>
-            <div className="text-xl font-bold self-center">RAGFlow</div>
-          </div>
-          <h1 className="text-[36px] font-medium  text-center mb-2">
-            {t('title')}
-          </h1>
-          {/* border border-accent-primary rounded-full */}
-          {/* <div className="mt-4 px-6 py-1 text-sm font-medium text-cyan-600  hover:bg-cyan-50 transition-colors duration-200 border-glow relative overflow-hidden">
-            {t('start')}
-          </div> */}
+      <div className="min-h-screen w-full bg-[url('/login_bg.png')] bg-cover flex flex-col relative overflow-hidden">
+        {/* 顶部 Logo 区域 */}
+        <div className="absolute top-5 left-14 flex items-center gap-2">
+          <img src={'/logo.png'} alt="logo" />
+          <img src={'/logo_text.png'} alt="logo_text" className="mr-[12]" />
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-[1050px] px-4 sm:px-6 lg:px-8">
-          {/* Logo and Header */}
 
+        <div className="flex flex-row items-center justify-center gap-2 z-10 my-[175px]">
+          <img
+            src={'/home_logo.png'}
+            alt="home_logo"
+            className="w-[170px] aspect-[1.37] object-cover"
+          />
+
+          <h1 className="text-[clamp(1.1rem,5vw,1.6rem)] font-bold text-gray-800 leading-tight text-center ">
+            {t('assistant')}
+          </h1>
+          <img
+            src={'/home_name.png'}
+            alt="海小豹"
+            className="inline-block align-baseline h-[23px] w-auto relative top-[2px]"
+            // 进阶：align-baseline 对齐文字基线 + top 微调
+          />
+        </div>
+
+        {/* 登录卡片主体 */}
+        <div className="absolute flex-col items-center w-full top-[162px]">
           {/* Login Form */}
           <FlipCard3D isLoginPage={isLoginPage}>
             <div className="flex flex-col items-center justify-center w-full">
-              <div className="text-center mb-8">
-                <h2 className="text-xl font-semibold text-text-primary">
-                  {title === 'login' ? t('loginTitle') : t('signUpTitle')}
-                </h2>
-              </div>
-              <div className=" w-full max-w-[540px] bg-bg-component backdrop-blur-sm rounded-2xl shadow-xl pt-14 pl-10 pr-10 pb-2 border border-border-button ">
+              <div className=" w-full max-w-[540px] bg-bg-component backdrop-blur-sm rounded-2xl shadow-xl pt-7 pl-10 pr-10 pb-2 border border-border-button ">
+                <div className="text-center mb-[25px]">
+                  <p className="text-gray-600 text-lg mt-2 max-w-2xl">
+                    {title === 'login'
+                      ? t('welcomeToLogin')
+                      : t('welcomeToSignUp')}
+                  </p>
+                  <div className="w-6 h-[3px] bg-blue-600 rounded-2xl mx-auto mt-1"></div>
+                </div>
                 <Form {...form}>
                   <form
                     className="flex flex-col gap-8 text-text-primary "
@@ -266,7 +254,7 @@ const Login = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <div className="flex gap-2">
+                              <div className="flex gap-2 h-[56px]">
                                 <Checkbox
                                   checked={field.value}
                                   onCheckedChange={(checked) => {
@@ -291,7 +279,7 @@ const Login = () => {
                     <ButtonLoading
                       type="submit"
                       loading={loading}
-                      className="bg-metallic-gradient border-b-[#00BEB4] border-b-2 hover:bg-metallic-gradient hover:border-b-[#02bcdd] w-full my-8"
+                      className="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors mb-4"
                     >
                       {title === 'login' ? t('login') : t('continue')}
                     </ButtonLoading>
@@ -321,29 +309,29 @@ const Login = () => {
                 </Form>
 
                 {title === 'login' && registerEnabled && (
-                  <div className="mt-10 text-right">
+                  <div className="mt-3 text-right">
                     <p className="text-text-disabled text-sm">
                       {t('signInTip')}
                       <Button
                         variant={'transparent'}
                         onClick={changeTitle}
-                        className="text-accent-primary/90 hover:text-accent-primary hover:bg-transparent font-medium border-none transition-colors duration-200"
+                        className="text-accent-primary/90 hover:text-blue-600 text-blue-600 hover:underline font-medium border-none"
                       >
-                        {t('signUp')}
+                        {t('gotoSignUp')}
                       </Button>
                     </p>
                   </div>
                 )}
                 {title === 'register' && (
-                  <div className="mt-10 text-right">
+                  <div className="mt-3 text-right">
                     <p className="text-text-disabled text-sm">
                       {t('signUpTip')}
                       <Button
                         variant={'transparent'}
                         onClick={changeTitle}
-                        className="text-accent-primary/90 hover:text-accent-primary hover:bg-transparent font-medium border-none transition-colors duration-200"
+                        className="text-accent-primary/90 hover:text-blue-600 text-blue-600 hover:underline font-medium border-none"
                       >
-                        {t('login')}
+                        {t('gotoLogin')}
                       </Button>
                     </p>
                   </div>

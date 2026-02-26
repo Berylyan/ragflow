@@ -76,7 +76,9 @@ function Root({ children }: React.PropsWithChildren) {
 
   return (
     <SidebarProvider className="h-full">
-      <div className="w-full h-dvh relative">{children}</div>
+      <div className="w-full h-dvh relative bg-[url('@/assets/banner.png')] bg-cover">
+        {children}
+      </div>
     </SidebarProvider>
   );
 }

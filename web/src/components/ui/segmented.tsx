@@ -30,14 +30,14 @@ const segmentedVariants = {
     sm: 'px-1 py-1',
     md: 'px-2 py-1.5',
     lg: 'px-4 px-2',
-    xl: 'px-5 py-2.5',
+    xl: 'px-0 py-[1px]',
     xxl: 'px-6 py-3',
   },
   buttonSize: {
     default: 'px-2 py-1',
     md: 'px-2 py-1',
     lg: 'px-4 px-1.5',
-    xl: 'px-6 py-2',
+    xl: 'px-10 py-2.5',
   },
 };
 export interface SegmentedProps extends Omit<
@@ -85,7 +85,7 @@ export function Segmented({
   return (
     <div
       className={cn(
-        'flex items-center p-1 gap-2 bg-bg-card',
+        'flex items-center gap-2 bg-bg-card shadow-[0_0_8px_2px_rgba(0,0,0,0.08)] bg-white',
         segmentedVariants.round[rounded],
         segmentedVariants.size[sizeType],
         className,
@@ -99,7 +99,7 @@ export function Segmented({
           <div
             key={actualValue}
             className={cn(
-              'inline-flex items-center text-base font-normal cursor-pointer',
+              'inline-flex items-center text-lg font-normal cursor-pointer',
               segmentedVariants.round[rounded],
               segmentedVariants.buttonSize[buttonSize],
               {

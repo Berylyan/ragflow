@@ -1,7 +1,7 @@
 import { CardContainer } from '@/components/card-container';
 import { EmptyCardType } from '@/components/empty/constant';
 import { EmptyAppCard } from '@/components/empty/empty';
-import ListFilterBar from '@/components/list-filter-bar';
+import { RootListFilterBar } from '@/components/list-filter-bar';
 import { RenameDialog } from '@/components/rename-dialog';
 import { Button } from '@/components/ui/button';
 import { RAGFlowPagination } from '@/components/ui/ragflow-pagination';
@@ -71,7 +71,7 @@ export default function Datasets() {
     <>
       <section className="py-4 flex-1 flex flex-col">
         {(!kbs?.length || kbs?.length <= 0) && !searchString && (
-          <div className="flex w-full items-center justify-center h-[calc(100vh-164px)]">
+          <div className="flex w-full items-center justify-center h-[calc(100vh-168px)]">
             <EmptyAppCard
               showIcon
               size="large"
@@ -84,23 +84,26 @@ export default function Datasets() {
         )}
         {(!!kbs?.length || searchString) && (
           <>
-            <ListFilterBar
-              title={t('header.dataset')}
-              searchString={searchString}
-              onSearchChange={handleInputChange}
-              value={filterValue}
-              filters={owners}
-              onChange={handleFilterSubmit}
-              className="px-8"
-              icon={'datasets'}
-            >
-              <Button onClick={showModal}>
-                <Plus className="h-4 w-4" />
-                {t('knowledgeList.createKnowledgeBase')}
-              </Button>
-            </ListFilterBar>
+            <div className="px-14 ">
+              <RootListFilterBar
+                title={t('header.dataset')}
+                searchString={searchString}
+                onSearchChange={handleInputChange}
+                value={filterValue}
+                filters={owners}
+                onChange={handleFilterSubmit}
+                className="px-12"
+                icon={'/knowledge_logo.png'}
+              >
+                <Button onClick={showModal}>
+                  <Plus className="h-4 w-4" />
+                  {t('knowledgeList.createKnowledgeBase')}
+                </Button>
+              </RootListFilterBar>
+            </div>
+
             {(!kbs?.length || kbs?.length <= 0) && searchString && (
-              <div className="flex w-full items-center justify-center h-[calc(100vh-164px)]">
+              <div className="flex w-full items-center justify-center h-[calc(100vh-412px)]">
                 <EmptyAppCard
                   showIcon
                   size="large"
@@ -112,7 +115,7 @@ export default function Datasets() {
               </div>
             )}
             <div className="flex-1">
-              <CardContainer className="max-h-[calc(100dvh-280px)] overflow-auto px-8">
+              <CardContainer className="max-h-[calc(100dvh-492px)] overflow-auto px-14">
                 {kbs.map((dataset) => {
                   return (
                     <DatasetCard

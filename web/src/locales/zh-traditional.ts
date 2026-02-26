@@ -74,6 +74,9 @@ export default {
       flow: '智能體',
       search: '搜尋',
       welcome: '歡迎來到',
+      assistant: '智能辦公助手',
+      assistant_desc:
+        '我能幫你管理海量資料、起草公文方案、精准檢索資訊，做你最可靠的辦公搭檔！',
     },
     knowledgeList: {
       welcome: '歡迎回來',

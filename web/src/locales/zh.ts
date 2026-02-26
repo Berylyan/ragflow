@@ -63,8 +63,13 @@ export default {
     login: {
       loginTitle: '登录账户',
       signUpTitle: '创建账户',
+      welcomeToLogin: '欢迎登录',
+      welcomeToSignUp: '欢迎注册',
+      assistant: '智能办公助手',
       login: '登录',
       signUp: '注册',
+      gotoLogin: '去登录',
+      gotoSignUp: '去注册',
       loginDescription: '很高兴再次见到您！',
       registerDescription: '很高兴您加入！',
       emailLabel: '邮箱',
@@ -98,6 +103,9 @@ export default {
       welcome: '欢迎来到',
       dataset: '知识库',
       memories: '记忆',
+      assistant: '智能办公助手',
+      assistant_desc:
+        '我能帮你管理海量资料、起草公文方案、精准检索信息，做你最靠谱的办公搭档！',
     },
     memories: {
       llmTooltip: '分析对话内容，提取关键信息，并生成结构化的记忆摘要。',

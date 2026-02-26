@@ -77,6 +77,7 @@ export default {
       flow: 'Agent',
       search: 'Recherche',
       welcome: 'Bienvenue sur',
+      assistant: 'Assistant de bureau intelligent',
     },
     knowledgeList: {
       welcome: 'Bon retour',
