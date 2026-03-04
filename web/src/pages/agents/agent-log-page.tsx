@@ -206,7 +206,7 @@ const AgentLogPage: React.FC = () => {
 
   return (
     <div className=" text-white">
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

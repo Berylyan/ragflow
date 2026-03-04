@@ -76,9 +76,7 @@ function Root({ children }: React.PropsWithChildren) {
 
   return (
     <SidebarProvider className="h-full">
-      <div className="w-full h-dvh relative bg-[url('@/assets/banner.png')] bg-cover">
-        {children}
-      </div>
+      <div className="w-full h-dvh relative">{children}</div>
     </SidebarProvider>
   );
 }
@@ -95,7 +93,7 @@ const RootProvider = ({ children }: React.PropsWithChildren) => {
     <TooltipProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider
-          defaultTheme={ThemeEnum.Dark}
+          defaultTheme={ThemeEnum.Light}
           storageKey="ragflow-ui-theme"
         >
           <Root>{children}</Root>

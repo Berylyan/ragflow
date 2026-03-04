@@ -108,6 +108,7 @@ export default {
       welcome: 'Welcome to',
       dataset: 'Dataset',
       memories: 'Memory',
+      assistant: 'Digital Employee',
     },
     memories: {
       llmTooltip:
@@ -2337,6 +2338,9 @@ Important structured information may include: names, dates, locations, events, k
       searchApps: 'Search apps',
       createSearch: 'Create search',
       searchGreeting: 'How can I help you today ？',
+      searchPlaceholder: 'Enter keywords to search',
+      searchTips:
+        'What are you looking for? You can easily find it with just one search',
       profile: 'Hide Profile',
       locale: 'Locale',
       embedCode: 'Embed code',

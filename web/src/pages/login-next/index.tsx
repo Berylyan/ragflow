@@ -85,7 +85,7 @@ const Login = () => {
       if (title === 'register' && !data.nickname) {
         ctx.addIssue({
           path: ['nickname'],
-          message: 'nicknamePlaceholder',
+          message: t('nicknamePlaceholder'),
           code: z.ZodIssueCode.custom,
         });
       }
@@ -133,9 +133,27 @@ const Login = () => {
       <div className="min-h-screen w-full bg-[url('/login_bg.png')] bg-cover flex flex-col relative overflow-hidden">
         {/* 顶部 Logo 区域 */}
         <div className="absolute top-5 left-14 flex items-center gap-2">
-          <img src={'/logo.png'} alt="logo" />
-          <img src={'/logo_text.png'} alt="logo_text" className="mr-[12]" />
+          <img src={'/logo.svg'} alt="logo" />
+          <span
+            className="text-2xl font-bold text-gray-800"
+            style={{ fontFamily: 'Microsoft YaHei, sans-serif' }} // 指定微软雅黑
+          >
+            海跃数字员工
+          </span>
         </div>
+
+        {/* <div className="py-5 px-14  flex items-center gap-2">
+          <img
+            src={'/logo.svg'}
+            alt="logo"
+          />
+          <span
+            className="text-2xl font-bold text-gray-800"
+            style={{ fontFamily: 'Microsoft YaHei, sans-serif' }} // 指定微软雅黑
+          >
+            海跃数字员工
+          </span>
+        </div> */}
 
         <div className="flex flex-row items-center justify-center gap-2 z-10 my-[175px]">
           <img
@@ -148,9 +166,9 @@ const Login = () => {
             {t('assistant')}
           </h1>
           <img
-            src={'/home_name.png'}
+            src={'/logo_name.svg'}
             alt="海小豹"
-            className="inline-block align-baseline h-[23px] w-auto relative top-[2px]"
+            className="inline-block align-baseline h-[36px] w-auto relative"
             // 进阶：align-baseline 对齐文字基线 + top 微调
           />
         </div>

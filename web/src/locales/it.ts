@@ -1,3 +1,4 @@
+//意大利语
 export default {
   translation: {
     common: {
@@ -1160,6 +1161,8 @@ Quanto sopra è il contenuto che devi riassumere.`,
       searchApps: 'Cerca app',
       createSearch: 'Crea ricerca',
       searchGreeting: 'Come posso aiutarti oggi?',
+      searchPlaceholder: 'Inserisci le parole chiave per la ricerca',
+      searchTips: 'Cosa cerchi, Cerchi subito',
       profile: 'Nascondi profilo',
       locale: 'Locale',
       embedCode: 'Codice embed',

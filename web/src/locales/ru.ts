@@ -1,3 +1,4 @@
+//俄语
 export default {
   translation: {
     common: {
@@ -2006,6 +2007,8 @@ export default {
       searchApps: 'Поисковые приложения',
       createSearch: 'Создать поиск',
       searchGreeting: 'Чем я могу вам помочь сегодня？',
+      searchPlaceholder: 'Введите ключевое слово для поиска',
+      searchTips: 'Что бы вы хотели найти — просто поискаете, и всё найдётся',
       profile: 'Скрыть профиль',
       locale: 'Локаль',
       embedCode: 'Код для встраивания',

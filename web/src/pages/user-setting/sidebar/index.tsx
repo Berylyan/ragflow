@@ -1,6 +1,5 @@
 import { IconFontFill } from '@/components/icon-font';
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
-import ThemeToggle from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Domain } from '@/constants/common';
 import { useSecondPathName } from '@/hooks/route-hook';
@@ -47,7 +46,7 @@ export function SideBar() {
   const { logout } = useLogout();
 
   return (
-    <aside className="w-[303px] bg-bg-base flex flex-col">
+    <aside className="w-[303px] bg-transparent flex flex-col">
       <div className="px-6 flex gap-2 items-center">
         <RAGFlowAvatar
           avatar={userInfo?.avatar}
@@ -66,7 +65,7 @@ export function SideBar() {
                   variant={hoverKey ? 'secondary' : 'ghost'}
                   className={cn('w-full justify-between gap-2.5 p-3 relative', {
                     'bg-bg-card text-text-primary': active === item.key,
-                    'bg-bg-base text-text-secondary': active !== item.key,
+                    'bg-transparent text-text-secondary': active !== item.key,
                   })}
                   onClick={handleMenuClick(item.key)}
                 >
@@ -94,15 +93,15 @@ export function SideBar() {
       </div>
 
       <div className="p-6 mt-auto ">
-        <div className="flex items-center gap-2 mb-6 justify-between">
+        {/* <div className="flex items-center gap-2 mb-6 justify-between">
           <div className="mr-2 px-2 text-accent-primary rounded-md">
             {version}
           </div>
           <ThemeToggle />
-        </div>
+        </div> */}
         <Button
-          variant="ghost"
-          className="w-full gap-3 bg-bg-base border border-border-button"
+          //variant="ghost"
+          className="w-full gap-3 bg-transparent border border-border-button"
           onClick={() => {
             logout();
           }}

@@ -333,7 +333,8 @@ export default function DatasetSettings() {
               <div className="text-right items-center flex justify-end gap-3 w-[768px]">
                 <Button
                   type="reset"
-                  className="bg-transparent text-color-white hover:bg-transparent border-gray-500 border-[1px]"
+                  variant="transparent"
+                  className="border-[#D9D9D9] bg-white text-[#8C8C8C] hover:bg-white hover:text-[#8C8C8C]"
                   onClick={() => {
                     form.reset();
                   }}

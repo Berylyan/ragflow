@@ -117,7 +117,7 @@ const RetrievalDocuments = ({
           <Button
             onClick={handleTogglePopover}
             className={cn(
-              'flex w-full p-1 rounded-md text-base text-text-primary border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto',
+              'flex w-full p-1 rounded-md text-base text-white border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto',
             )}
           >
             <div className="flex justify-between items-center w-full">
@@ -130,7 +130,7 @@ const RetrievalDocuments = ({
               </div>
               <div className="flex items-center justify-between">
                 <XIcon
-                  className="h-4 mx-2 cursor-pointer text-muted-foreground"
+                  className="h-4 mx-2 cursor-pointer text-white"
                   onClick={(event) => {
                     event.stopPropagation();
                     handleClear();
@@ -140,7 +140,7 @@ const RetrievalDocuments = ({
                   orientation="vertical"
                   className="flex min-h-6 h-full"
                 />
-                <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
+                <ChevronDown className="h-4 mx-2 cursor-pointer text-white" />
               </div>
             </div>
           </Button>

@@ -94,7 +94,7 @@ export function ConfirmDeleteDialog({
               {cancelButtonText || t('common.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-state-error text-text-primary hover:text-text-primary hover:bg-state-error"
+              className="bg-state-error text-white hover:text-white hover:bg-state-error"
               onClick={onOk}
             >
               {okButtonText || t('common.delete')}

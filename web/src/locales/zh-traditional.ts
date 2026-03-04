@@ -74,7 +74,7 @@ export default {
       flow: '智能體',
       search: '搜尋',
       welcome: '歡迎來到',
-      assistant: '智能辦公助手',
+      assistant: '數字員工',
       assistant_desc:
         '我能幫你管理海量資料、起草公文方案、精准檢索資訊，做你最可靠的辦公搭檔！',
     },
@@ -1287,6 +1287,8 @@ export default {
     search: {
       createSearch: '新建查詢',
       searchGreeting: '今天我能為你做些什麽？',
+      searchPlaceholder: '輸入關鍵字進行蒐索',
+      searchTips: '想找什麼，一搜即達',
       profile: '隱藏個人資料',
       locale: '語言',
       embedCode: '嵌入代碼',

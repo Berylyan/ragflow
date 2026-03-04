@@ -40,7 +40,7 @@ export default function AgentExplore() {
 
   return (
     <section className="h-full flex flex-col">
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

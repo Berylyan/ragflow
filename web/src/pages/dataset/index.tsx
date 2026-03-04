@@ -22,7 +22,7 @@ export default function DatasetWrapper() {
   return (
     <KnowledgeBaseProvider knowledgeBase={data} loading={loading}>
       <section className="flex h-full flex-col w-full">
-        <PageHeader>
+        <PageHeader className="!bg-transparent">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>

@@ -112,7 +112,7 @@ export default function Chat() {
 
   return (
     <section className="h-full flex flex-col">
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

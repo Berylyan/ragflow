@@ -1,3 +1,4 @@
+//保加利亚语
 export default {
   translation: {
     common: {
@@ -2341,6 +2342,8 @@ Important structured information may include: names, dates, locations, events, k
       searchApps: 'Приложения за търсене',
       createSearch: 'Създай търсене',
       searchGreeting: 'Как мога да ви помогна днес?',
+      searchPlaceholder: 'Въведете ключова дума за търсене',
+      searchTips: 'Какво търсите, търсете',
       profile: 'Скрий профил',
       locale: 'Локал',
       embedCode: 'Код за вграждане',

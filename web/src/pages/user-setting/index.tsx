@@ -22,7 +22,7 @@ const UserSetting = () => {
 
   return (
     <section className="flex flex-col h-full">
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

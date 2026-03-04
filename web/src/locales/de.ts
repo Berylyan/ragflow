@@ -1,3 +1,4 @@
+//德语
 export default {
   translation: {
     common: {
@@ -2358,6 +2359,8 @@ Wichtige strukturierte Informationen können sein: Namen, Daten, Orte, Ereigniss
       searchApps: 'Such-Apps',
       createSearch: 'Suche erstellen',
       searchGreeting: 'Wie kann ich Ihnen heute helfen?',
+      searchPlaceholder: 'Geben Sie für die Suche ein Schlüsselwort ein',
+      searchTips: 'Was Sie suchen, suchen Sie',
       profile: 'Profil ausblenden',
       locale: 'Gebietsschema',
       embedCode: 'Einbettungscode',

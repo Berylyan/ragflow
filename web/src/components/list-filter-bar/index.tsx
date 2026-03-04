@@ -186,8 +186,8 @@ export function RootListFilterBar({
       {/* 中间核心：搜索框 + 知识库文字（真正的页面正中间） */}
       <div className="flex flex-col items-center gap-4 mx-auto">
         {/* 知识库标题 */}
-        <div className="relative">
-          <img
+        <div className="relative h-[32px]">
+          {/* <img
             src="/title_dot.png"
             alt="装饰点"
             className="absolute -top-2 -right-3 w-6 h-6 object-contain"
@@ -195,7 +195,7 @@ export function RootListFilterBar({
 
           <h1 className="text-[clamp(1.5rem,5vw,1.5rem)] font-bold text-gray-800 relative z-10">
             {title}
-          </h1>
+          </h1> */}
         </div>
 
         {/* 搜索框组件 */}
@@ -220,7 +220,7 @@ export function RootListFilterBar({
           {/* 输入框 */}
           <input
             type="text"
-            placeholder="输入关键字进行搜索"
+            placeholder={t('search.searchPlaceholder')}
             value={searchString}
             onChange={onSearchChange}
             className="flex-1 py-3 px-3 bg-transparent outline-none text-gray-800 text-base placeholder:text-base placeholder-gray-400"

@@ -46,7 +46,7 @@ export default function ChunkPage() {
 
   return (
     <section>
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

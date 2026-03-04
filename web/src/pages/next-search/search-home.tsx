@@ -1,9 +1,7 @@
-import { Input } from '@/components/originui/input';
 import Spotlight from '@/components/spotlight';
 import message from '@/components/ui/message';
 import { IUserInfo } from '@/interfaces/database/user-setting';
 import { cn } from '@/lib/utils';
-import { Search } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import './index.less';
@@ -33,7 +31,7 @@ export default function SearchPage({
             'text-4xl font-bold bg-gradient-to-l from-[#40EBE3] to-[#4A51FF] bg-clip-text',
           )}
         >
-          RAGFlow
+          {t('search.searchTips')}
         </h1>
 
         <div className="rounded-lg  text-primary text-xl sticky flex justify-center w-full transform scale-100 mt-8 p-6 h-[240px] border">
@@ -52,7 +50,7 @@ export default function SearchPage({
               </>
             )}
 
-            <div className="relative w-full ">
+            {/* <div className="relative w-full ">
               <Input
                 placeholder={t('search.searchGreeting')}
                 className="w-full rounded-full py-7 px-4 pr-10 text-text-primary text-lg bg-bg-base delay-700"
@@ -86,6 +84,63 @@ export default function SearchPage({
                 }}
               >
                 <Search size={22} className="m-auto" />
+              </button>
+            </div> */}
+            {/* 搜索框组件 */}
+            <div className="w-[540px] flex items-center bg-[#EFF4FC] my-2 rounded-full shadow-sm border border-gray-100 overflow-hidden">
+              {/* 搜索图标 */}
+              <div className="pl-5 text-gray-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              {/* 输入框 */}
+              <input
+                type="text"
+                placeholder={t('search.searchGreeting')}
+                value={searchText}
+                onKeyUp={(e) => {
+                  if (e.key === 'Enter') {
+                    if (canSearch === false) {
+                      message.warning(t('search.chooseDataset'));
+                      return;
+                    }
+                    setIsSearching(!isSearching);
+                  }
+                }}
+                onChange={(e) => {
+                  if (canSearch === false) {
+                    message.warning(t('search.chooseDataset'));
+                    return;
+                  }
+                  setSearchText(e.target.value || '');
+                }}
+                className="flex-1 py-3 px-3 bg-transparent outline-none text-gray-800 text-base placeholder:text-base placeholder-gray-400"
+              />
+
+              {/* 搜索按钮 */}
+              <button
+                className="bg-gradient-to-b from-[#9f7aea] to-[#667eea] text-white m-0.5 px-7 py-2 text-[17px] font-medium rounded-3xl"
+                onClick={() => {
+                  if (canSearch === false) {
+                    message.warning(t('search.chooseDataset'));
+                    return;
+                  }
+                  setIsSearching(!isSearching);
+                }}
+              >
+                {t('search.searchApps')}
               </button>
             </div>
           </div>

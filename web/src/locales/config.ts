@@ -42,7 +42,8 @@ i18n
     },
     supportedLngs: Object.values(LanguageAbbreviation),
     resources,
-    fallbackLng: 'en',
+    // fallbackLng: 'en',
+    fallbackLng: LanguageAbbreviation.Zh,
     interpolation: {
       escapeValue: false,
     },
@@ -79,7 +80,9 @@ export const changeLanguageAsync = async (lng: string): Promise<void> => {
 };
 
 export const initLanguage = async (): Promise<void> => {
-  const currentLng = i18n.language || localStorage.getItem('lng') || 'en';
+  const currentLng =
+    i18n.language || localStorage.getItem('lng') || LanguageAbbreviation.Zh;
+  //const currentLng = i18n.language || localStorage.getItem('lng') || 'en';
 
   if (currentLng !== 'en' && languageImports[currentLng]) {
     await loadLanguageAsync(currentLng);

@@ -153,7 +153,7 @@ const Modal: ModalType = ({
             disabled={confirmLoading || disabled}
             onClick={() => handleOk()}
             className={cn(
-              'px-2 py-1 bg-primary text-primary-foreground rounded-md hover:bg-primary/90',
+              'px-2 py-1 bg-primary text-white rounded-md hover:bg-primary/90',
               { 'cursor-not-allowed': disabled },
               okButtonClassName,
             )}

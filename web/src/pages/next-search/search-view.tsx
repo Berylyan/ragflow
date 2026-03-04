@@ -84,7 +84,7 @@ export default function SearchingView({
           'relative z-10 px-8 pt-8 flex  text-transparent justify-start items-start w-full',
         )}
       >
-        <h1
+        {/* <h1
           className={cn(
             'text-4xl font-bold bg-gradient-to-l from-[#40EBE3] to-[#4A51FF] bg-clip-text cursor-pointer',
           )}
@@ -93,7 +93,7 @@ export default function SearchingView({
           }}
         >
           RAGFlow
-        </h1>
+        </h1> */}
         <div
           className={cn(
             ' rounded-lg text-primary text-xl sticky flex flex-col justify-center w-2/3 max-w-[780px] transform scale-100 ml-16 ',

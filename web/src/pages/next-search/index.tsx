@@ -57,7 +57,7 @@ export default function SearchPage() {
 
   return (
     <section>
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -72,7 +72,7 @@ export default function SearchPage() {
           </BreadcrumbList>
         </Breadcrumb>
       </PageHeader>
-      <div className="flex gap-3 w-full bg-bg-base">
+      <div className="flex gap-3 w-full">
         <div className="flex-1">
           {!isSearching && (
             <div className="animate-fade-in-down">
@@ -129,7 +129,7 @@ export default function SearchPage() {
       </div>
       <div className="absolute right-5 top-4 ">
         <Button
-          className="bg-text-primary  text-bg-base border-b-accent-primary border-b-2"
+          className="bg-text-primary text-bg-base"
           onClick={() => {
             handleOperate().then((res) => {
               console.log(res, 'res');

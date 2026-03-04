@@ -211,7 +211,7 @@ export default function Agent() {
 
   return (
     <section className="h-full">
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <section>
           <Breadcrumb>
             <BreadcrumbList>

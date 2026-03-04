@@ -106,11 +106,11 @@ const multiSelectVariants = cva(
     variants: {
       variant: {
         default:
-          'border-foreground/10 text-foreground bg-card hover:bg-card/80',
+          'border-foreground/10 text-white bg-card hover:bg-card/80 [&_svg]:text-white',
         secondary:
-          'border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          'border-foreground/10 bg-secondary text-white hover:bg-secondary/80 [&_svg]:text-white',
         destructive:
-          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
+          'border-transparent bg-destructive text-white hover:bg-destructive/80 [&_svg]:text-white',
         inverted: 'inverted',
       },
     },
@@ -290,7 +290,7 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              'flex w-full p-1 rounded-md border border-border-button min-h-10 h-auto placeholder:text-text-disabled items-center justify-between bg-bg-input focus-visible:bg-bg-input hover:bg-bg-input [&_svg]:pointer-events-auto',
+              'flex w-full p-1 rounded-md border border-border-button min-h-10 h-auto placeholder:text-white items-center justify-between bg-bg-input focus-visible:bg-bg-input hover:bg-bg-input text-white [&_svg]:pointer-events-auto [&_svg]:text-white',
               className,
             )}
           >
@@ -351,7 +351,7 @@ export const MultiSelect = React.forwardRef<
                 </div>
                 <div className="flex items-center justify-between ">
                   <XIcon
-                    className="h-4 mx-2 cursor-pointer text-text-secondary hidden group-hover:block"
+                    className="h-4 mx-2 cursor-pointer text-white hidden group-hover:block"
                     onClick={(event) => {
                       event.stopPropagation();
                       handleClear();
@@ -361,15 +361,13 @@ export const MultiSelect = React.forwardRef<
                     orientation="vertical"
                     className="min-h-6 h-full hidden group-hover:flex"
                   />
-                  <ChevronDown className="h-4 mx-2 cursor-pointer text-text-secondary" />
+                  <ChevronDown className="h-4 mx-2 cursor-pointer text-white" />
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-text-secondary mx-3">
-                  {placeholder}
-                </span>
-                <ChevronDown className="h-4 cursor-pointer text-text-secondary mx-2" />
+                <span className="text-sm text-white mx-3">{placeholder}</span>
+                <ChevronDown className="h-4 cursor-pointer text-white mx-2" />
               </div>
             )}
           </Button>

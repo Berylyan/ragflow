@@ -41,7 +41,7 @@ export default function ShareSeachPage() {
       )}
       {/* <SearchingView {...searchingParam} searchData={searchData} />; */}
       {!isSearching && (
-        <div className="animate-fade-in-down">
+        <div className="animate-fade-in-down bg-blue-800">
           <SearchHome
             setIsSearching={setIsSearching}
             isSearching={isSearching}

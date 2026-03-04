@@ -20,7 +20,7 @@ function BannerCard() {
 
 export function Banner() {
   return (
-    <section className="bg-[url('@/assets/banner.png')] bg-cover h-28 rounded-2xl  my-8 flex gap-8 justify-between">
+    <section className="h-28 rounded-2xl  my-8 flex gap-8 justify-between">
       <div className="h-full text-3xl font-bold items-center inline-flex ml-6">
         Welcome to RAGFlow
       </div>
@@ -48,15 +48,15 @@ export function NextBanner() {
         alt="home_logo"
         className="w-56 aspect-[1.37] object-cover"
       />
-      <div className="mx-2 mb-4">
-        <h1 className=" text-[clamp(2rem,5vw,3.1rem)] font-bold text-gray-800 leading-tight">
-          {t('header.assistant')}
+      <div className="mx-4 mb-4">
+        <div className=" text-[50px] font-extrabold text-gray-800 leading-tight">
           <img
-            src={'/home_name.png'}
+            src={'/logo_name.svg'}
             alt="海小豹"
-            className="inline-block align-text-bottom h-15 w-auto mx-1 px-2"
+            className="inline-block align-text-bottom h-15 w-auto  px-1"
           />
-        </h1>
+          {t('header.assistant')}
+        </div>
 
         <p className="text-gray-600 text-md mt-2 max-w-2xl">
           我能帮你管理海量资料、起草公文方案、精准检索信息，做你最靠谱的办公搭档！

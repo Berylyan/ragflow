@@ -99,7 +99,7 @@ export default function AgentTemplates() {
 
   return (
     <section>
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

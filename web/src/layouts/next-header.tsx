@@ -1,5 +1,4 @@
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
-import { useTheme } from '@/components/theme-provider';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Segmented, SegmentedValue } from '@/components/ui/segmented';
-import { LanguageList, LanguageMap, ThemeEnum } from '@/constants/common';
+import { LanguageList, LanguageMap } from '@/constants/common';
 import { useChangeLanguage } from '@/hooks/logic-hooks';
 import { useNavigatePage } from '@/hooks/logic-hooks/navigate-hooks';
 import { useNavigateWithFromState } from '@/hooks/route-hook';
@@ -22,7 +21,7 @@ import {
   MessageSquareText,
   Search,
 } from 'lucide-react';
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 import { BellButton } from './bell-button';
@@ -47,8 +46,6 @@ export function Header() {
   const { navigateToOldProfile } = useNavigatePage();
 
   const changeLanguage = useChangeLanguage();
-  const { setTheme, theme } = useTheme();
-
   const {
     data: { language = 'English', avatar, nickname },
   } = useFetchUserInfo();
@@ -61,10 +58,6 @@ export function Header() {
     key: x,
     label: <span>{LanguageMap[x as keyof typeof LanguageMap]}</span>,
   }));
-
-  const onThemeClick = React.useCallback(() => {
-    setTheme(theme === ThemeEnum.Dark ? ThemeEnum.Light : ThemeEnum.Dark);
-  }, [setTheme, theme]);
 
   const tagsData = useMemo(
     () => [
@@ -130,17 +123,17 @@ export function Header() {
       <section className="py-5 px-14 flex justify-between items-center ">
         <div className="flex items-center gap-2">
           <img
-            src={'/logo.png'}
+            src={'/logo.svg'}
             alt="logo"
             className="cursor-pointer"
             onClick={handleLogoClick}
           />
-          <img
-            src={'/logo_text.png'}
-            alt="logo_text"
-            className="mr-[12] cursor-pointer"
-            onClick={handleLogoClick}
-          />
+          <span
+            className="text-2xl font-semibold text-gray-800"
+            style={{ fontFamily: 'Microsoft YaHei, sans-serif' }} // 指定微软雅黑
+          >
+            海跃数字员工
+          </span>
         </div>
 
         <div className="flex items-center gap-5 text-text-badge">

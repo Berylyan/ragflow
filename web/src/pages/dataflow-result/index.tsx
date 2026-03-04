@@ -157,7 +157,7 @@ const Chunk = () => {
   const { summaryInfo } = useSummaryInfo(dataset, currentTimeNode);
   return (
     <>
-      <PageHeader>
+      <PageHeader className="!bg-transparent">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
