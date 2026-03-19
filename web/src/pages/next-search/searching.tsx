@@ -20,11 +20,5 @@ export default function SearchingPage({
     setIsSearching,
     setSearchText,
   });
-  return (
-    <SearchingView
-      {...searchingParam}
-      searchData={searchData}
-      setIsSearching={setIsSearching}
-    />
-  );
+  return <SearchingView {...searchingParam} searchData={searchData} />;
 }

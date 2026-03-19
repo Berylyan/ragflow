@@ -93,6 +93,7 @@ export interface Message {
   content: string;
   role: MessageType;
   doc_ids?: string[];
+  reasoning?: boolean;
   prompt?: string;
   id?: string;
   audio_binary?: string;
@@ -132,6 +133,7 @@ export interface IAnswer {
   attachment?: IAttachment;
   reference?: IReference;
   conversationId?: string;
+  reasoning?: boolean;
   prompt?: string;
   id?: string;
   audio_binary?: string;

@@ -162,15 +162,18 @@ const Login = () => {
             className="w-[170px] aspect-[1.37] object-cover"
           />
 
-          <h1 className="text-[clamp(1.1rem,5vw,1.6rem)] font-bold text-gray-800 leading-tight text-center ">
-            {t('assistant')}
-          </h1>
-          <img
-            src={'/logo_name.svg'}
-            alt="海小豹"
-            className="inline-block align-baseline h-[36px] w-auto relative"
-            // 进阶：align-baseline 对齐文字基线 + top 微调
-          />
+          <div className="flex flex-row gap-1">
+            <img
+              src={'/logo_name.svg'}
+              alt="海小豹"
+              className="inline-block align-baseline h-[36px] w-auto relative"
+              // 进阶：align-baseline 对齐文字基线 + top 微调
+            />
+
+            <h1 className="text-[clamp(1.1rem,5vw,1.6rem)] font-bold text-gray-800 leading-tight text-center ">
+              {t('assistant')}
+            </h1>
+          </div>
         </div>
 
         {/* 登录卡片主体 */}

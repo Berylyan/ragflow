@@ -727,6 +727,7 @@ The above is the content you need to summarize.`,
     },
     chat: {
       messagePlaceholder: 'Въведете вашето съобщение тук...',
+      thinking: 'Мислене',
       exit: 'Изход',
       multipleModels: 'Множество модели',
       applyModelConfigs: 'Приложи конфигурации на модели',

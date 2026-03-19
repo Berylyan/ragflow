@@ -47,8 +47,6 @@ export const enum UserSettingApiAction {
 }
 
 export const useFetchUserInfo = (): ResponseGetType<IUserInfo> => {
-  const { i18n } = useTranslation();
-
   const { data, isFetching: loading } = useQuery({
     queryKey: [UserSettingApiAction.UserInfo],
     initialData: {},
@@ -118,7 +116,7 @@ export const useFetchTenantInfo = (
   return { data, loading };
 };
 
-const DEFAULT_PARSERS = [
+export const DEFAULT_PARSERS = [
   { value: 'naive', label: 'General' },
   { value: 'qa', label: 'Q&A' },
   { value: 'resume', label: 'Resume' },
@@ -135,6 +133,16 @@ const DEFAULT_PARSERS = [
   { value: 'tag', label: 'Tag' },
 ];
 
+const splitParserIds = (parserIds?: string): string[] =>
+  parserIds?.split(',').filter((x) => x.trim() !== '') ?? [];
+
+export const getDefaultParserIdForDatasetCreation = (
+  parserIds?: string,
+): string =>
+  splitParserIds(parserIds)[0]?.split(':')[0] ??
+  DEFAULT_PARSERS.find((item) => item.value === 'naive')?.value ??
+  'naive';
+
 export const useSelectParserList = (): Array<{
   value: string;
   label: string;
@@ -142,8 +150,7 @@ export const useSelectParserList = (): Array<{
   const { data: tenantInfo } = useFetchTenantInfo(true);
 
   const parserList = useMemo(() => {
-    const parserArray: Array<string> = tenantInfo?.parser_ids?.split(',') ?? [];
-    const filteredArray = parserArray.filter((x) => x.trim() !== '');
+    const filteredArray = splitParserIds(tenantInfo?.parser_ids);
 
     if (filteredArray.length === 0) {
       return DEFAULT_PARSERS;
@@ -194,7 +201,7 @@ export const useFetchSystemVersion = () => {
         setVersion(data.data);
         setLoading(false);
       }
-    } catch (error) {
+    } catch {
       setLoading(false);
     }
   }, []);

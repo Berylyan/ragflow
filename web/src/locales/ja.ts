@@ -351,6 +351,7 @@ export default {
     },
     chat: {
       messagePlaceholder: 'メッセージを入力してください...',
+      thinking: '考える',
       exit: '終了',
       multipleModels: '複数モデル',
       applyModelConfigs: 'モデル設定を適用',

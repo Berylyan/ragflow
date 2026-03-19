@@ -141,12 +141,14 @@ export const useSendSharedMessage = () => {
           content: value,
           doc_ids: [],
           id,
+          reasoning: enableThinking,
           role: MessageType.User,
         });
         handleSendMessage(
           {
             content: value.trim(),
             id,
+            reasoning: enableThinking,
             role: MessageType.User,
           },
           enableThinking,

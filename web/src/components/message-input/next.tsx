@@ -55,6 +55,7 @@ interface NextMessageInputProps {
   onUpload?: NonNullable<FileUploadProps['onUpload']>;
   removeFile?(file: File): void;
   showReasoning?: boolean;
+  defaultEnableThinking?: boolean;
   showInternet?: boolean;
   resize?: 'none' | 'vertical' | 'horizontal' | 'both';
 }
@@ -73,6 +74,7 @@ export function NextMessageInput({
   onPressEnter,
   removeFile,
   showReasoning = false,
+  defaultEnableThinking = false,
   showInternet = false,
 }: NextMessageInputProps) {
   const [files, setFiles] = React.useState<File[]>([]);
@@ -80,8 +82,12 @@ export function NextMessageInput({
     null,
   );
 
-  const [enableThinking, setEnableThinking] = useState(false);
+  const [enableThinking, setEnableThinking] = useState(defaultEnableThinking);
   const [enableInternet, setEnableInternet] = useState(false);
+
+  useEffect(() => {
+    setEnableThinking(defaultEnableThinking);
+  }, [defaultEnableThinking]);
 
   const handleThinkingToggle = useCallback(() => {
     setEnableThinking((prev) => !prev);
@@ -244,7 +250,7 @@ export function NextMessageInput({
                 onClick={handleThinkingToggle}
               >
                 <Atom />
-                <span>Thinking</span>
+                <span>{t('chat.thinking')}</span>
               </Button>
             )}
             {showInternet && (

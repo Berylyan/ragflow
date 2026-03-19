@@ -159,6 +159,7 @@ export const useSendMessage = (controller: AbortController) => {
         content: value,
         files: files,
         id,
+        reasoning: enableThinking,
         role: MessageType.User,
         conversationId: targetConversationId,
       });
@@ -173,6 +174,7 @@ export const useSendMessage = (controller: AbortController) => {
             content: value.trim(),
             role: MessageType.User,
             files: files,
+            reasoning: enableThinking,
             conversationId: targetConversationId,
           },
           enableInternet,

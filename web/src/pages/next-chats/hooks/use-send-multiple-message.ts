@@ -59,6 +59,7 @@ export function useSendMultipleChatMessage(
             {
               role: MessageType.Assistant,
               content: answer,
+              reasoning: message.reasoning,
               id: buildMessageUuid({ ...message, role: MessageType.Assistant }),
             },
           ];
@@ -79,6 +80,8 @@ export function useSendMultipleChatMessage(
       const chatBoxId = answer.chatBoxId;
       if (typeof chatBoxId === 'string') {
         const currentChatMessages = currentRecord[chatBoxId];
+        const previousAssistant = currentChatMessages?.at(-1);
+        const reasoning = answer.reasoning ?? previousAssistant?.reasoning;
 
         const nextChatMessages = [
           ...(currentChatMessages?.slice(0, -1) ?? []),
@@ -86,6 +89,7 @@ export function useSendMultipleChatMessage(
             role: MessageType.Assistant,
             content: answer.answer,
             reference: answer.reference,
+            reasoning,
             id: buildMessageUuid({
               id: answer.id,
               role: MessageType.Assistant,
@@ -201,6 +205,7 @@ export function useSendMultipleChatMessage(
           addNewestQuestion({
             content: value,
             id,
+            reasoning: enableThinking,
             role: MessageType.User,
             chatBoxId,
             files,
@@ -219,6 +224,7 @@ export function useSendMultipleChatMessage(
                 content: value.trim(),
                 role: MessageType.User,
                 files,
+                reasoning: enableThinking,
                 conversationId: targetConversationId,
               },
               chatBoxId,

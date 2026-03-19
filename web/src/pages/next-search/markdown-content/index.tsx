@@ -30,9 +30,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useFetchDocumentThumbnailsByIds } from '@/hooks/use-document-request';
+import { downloadDocument } from '@/utils/file-util';
 import classNames from 'classnames';
 import { omit } from 'lodash';
 import { pipe } from 'lodash/fp';
+import { ArrowDownToLine } from 'lucide-react';
 import reactStringReplace from 'react-string-replace';
 
 // Defining Tailwind CSS class name constants
@@ -81,16 +83,17 @@ const MarkdownContent = ({
   }, [reference, setDocumentIds]);
 
   const handleDocumentButtonClick = useCallback(
-    (
-      documentId: string,
-      chunk: IReferenceChunk,
-      isPdf: boolean = false,
-      documentUrl?: string,
-    ) =>
-      () => {
-        clickDocumentButton?.(documentId, chunk);
-      },
+    (documentId: string, chunk: IReferenceChunk) => () => {
+      clickDocumentButton?.(documentId, chunk);
+    },
     [clickDocumentButton],
+  );
+
+  const handleDocumentDownload = useCallback(
+    (documentId: string, documentName?: string) => () => {
+      void downloadDocument({ id: documentId, filename: documentName });
+    },
+    [],
   );
 
   const rehypeWrapReference = () => {
@@ -190,7 +193,7 @@ const MarkdownContent = ({
                   variant="link"
                   className={classNames(
                     styles.documentLink,
-                    'text-wrap flex-1 h-auto',
+                    'h-auto flex-1 cursor-pointer text-wrap',
                   )}
                   onClick={handleDocumentButtonClick(
                     documentId,
@@ -201,18 +204,31 @@ const MarkdownContent = ({
                 >
                   {document?.doc_name}
                 </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 cursor-pointer gap-1 px-2 text-xs text-text-secondary hover:text-text-primary"
+                  onClick={handleDocumentDownload(
+                    documentId,
+                    document?.doc_name,
+                  )}
+                >
+                  <ArrowDownToLine className="size-3.5" />
+                  {t('common.download')}
+                </Button>
               </div>
             )}
           </div>
         </div>
       );
     },
-    [getReferenceInfo, handleDocumentButtonClick],
+    [getReferenceInfo, handleDocumentButtonClick, handleDocumentDownload, t],
   );
 
   const renderReference = useCallback(
     (text: string) => {
-      let replacedText = reactStringReplace(text, currentReg, (match) => {
+      const replacedText = reactStringReplace(text, currentReg, (match) => {
         const chunkIndex = getChunkIndex(match);
 
         return (
@@ -238,7 +254,7 @@ const MarkdownContent = ({
     <Markdown
       rehypePlugins={[rehypeWrapReference, rehypeKatex, rehypeRaw]}
       remarkPlugins={[remarkGfm, remarkMath]}
-      className="[&>section.think]:pl-[10px] [&>section.think]:text-[#8b8b8b] [&>section.think]:border-l-2 [&>section.think]:border-l-[#d5d3d3] [&>section.think]:mb-[10px] [&>section.think]:text-xs [&>blockquote]:pl-[10px] [&>blockquote]:border-l-4 [&>blockquote]:border-l-[#ccc] text-sm"
+      className="[&>section.think]:pl-[10px] [&>section.think]:text-[#8b8b8b] [&>section.think]:border-l-2 [&>section.think]:border-l-[#d5d3d3] [&>section.think]:mb-[10px] [&>section.think]:text-xs [&>blockquote]:pl-[10px] [&>blockquote]:border-l-4 [&>blockquote]:border-l-[#ccc] text-base"
       components={
         {
           'custom-typography': ({ children }: { children: string }) =>

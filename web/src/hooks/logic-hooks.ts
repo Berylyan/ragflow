@@ -299,6 +299,7 @@ export const useSendMessageWithSse = (
                       answer: newAnswer,
                       conversationId: body?.conversation_id,
                       chatBoxId: body.chatBoxId,
+                      reasoning: body?.reasoning,
                     };
                   });
                 }
@@ -470,6 +471,7 @@ export const useSelectDerivedMessages = () => {
             role: MessageType.Assistant,
             content: answer,
             conversationId: message.conversationId,
+            reasoning: message.reasoning,
             id: buildMessageUuid({ ...message, role: MessageType.Assistant }),
           },
         ];
@@ -495,12 +497,15 @@ export const useSelectDerivedMessages = () => {
   // Add the streaming message to the last item in the message list
   const addNewestAnswer = useCallback((answer: IAnswer) => {
     setDerivedMessages((pre) => {
+      const previousAssistant = pre?.at(-1);
+      const reasoning = answer.reasoning ?? previousAssistant?.reasoning;
       return [
         ...(pre?.slice(0, -1) ?? []),
         {
           role: MessageType.Assistant,
           content: answer.answer,
           reference: answer.reference,
+          reasoning,
           id: buildMessageUuid({
             id: answer.id,
             role: MessageType.Assistant,
@@ -517,11 +522,13 @@ export const useSelectDerivedMessages = () => {
   const addNewestOneAnswer = useCallback((answer: IAnswer) => {
     setDerivedMessages((pre) => {
       const idx = pre.findIndex((x) => x.id === answer.id);
+      const currentMessage = idx !== -1 ? pre[idx] : pre?.at(-1);
+      const reasoning = answer.reasoning ?? currentMessage?.reasoning;
 
       if (idx !== -1) {
         return pre.map((x) => {
           if (x.id === answer.id) {
-            return { ...x, ...answer, content: answer.answer };
+            return { ...x, ...answer, reasoning, content: answer.answer };
           }
           return x;
         });
@@ -533,6 +540,7 @@ export const useSelectDerivedMessages = () => {
           role: MessageType.Assistant,
           content: answer.answer,
           reference: answer.reference,
+          reasoning,
           id: buildMessageUuid({
             id: answer.id,
             role: MessageType.Assistant,

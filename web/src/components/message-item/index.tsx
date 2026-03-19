@@ -6,10 +6,18 @@ import {
   UploadResponseDataType,
 } from '@/interfaces/database/chat';
 import classNames from 'classnames';
-import { memo, useCallback, useMemo } from 'react';
+import { isEmpty } from 'lodash';
+import { Atom, ChevronDown, ChevronUp } from 'lucide-react';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { IRegenerateMessage, IRemoveMessageById } from '@/hooks/logic-hooks';
 import { cn } from '@/lib/utils';
+import {
+  extractThinkingContent,
+  hasThinkingContent,
+  removeThinkingContent,
+} from '@/utils/chat';
 import MarkdownContent from '../markdown-content';
 import { ReferenceDocumentList } from '../next-message-item/reference-document-list';
 import { ReferenceImageList } from '../next-message-item/reference-image-list';
@@ -58,6 +66,8 @@ const MessageItem = ({
   const { theme } = useTheme();
   const isAssistant = item.role === MessageType.Assistant;
   const isUser = item.role === MessageType.User;
+  const { t } = useTranslation();
+  const [showThinking, setShowThinking] = useState(Boolean(item.reasoning));
 
   const uploadedFiles = useMemo(() => {
     return item?.files ?? [];
@@ -80,6 +90,40 @@ const MessageItem = ({
     // Remove the JSON part from the content to avoid showing it
     return removePDFDownloadInfo(item.content, pdfDownloadInfo);
   }, [item.content, pdfDownloadInfo]);
+
+  const thinkingContent = useMemo(
+    () => extractThinkingContent(messageContent),
+    [messageContent],
+  );
+
+  const hasThinking = useMemo(
+    () =>
+      hasThinkingContent(messageContent) && !isEmpty(thinkingContent.trim()),
+    [messageContent, thinkingContent],
+  );
+  const isThinkingInProgress = useMemo(
+    () => hasThinking && !messageContent.includes('</think>'),
+    [hasThinking, messageContent],
+  );
+  const thinkingStatusLabel = useMemo(
+    () =>
+      t(
+        isThinkingInProgress
+          ? 'chat.reasoningInProgress'
+          : 'chat.reasoningCompleted',
+      ),
+    [isThinkingInProgress, t],
+  );
+
+  const answerContent = useMemo(
+    () => removeThinkingContent(messageContent),
+    [messageContent],
+  );
+
+  const hasAnswerContent = useMemo(
+    () => !isEmpty(answerContent.trim()),
+    [answerContent],
+  );
 
   const handleRegenerateMessage = useCallback(() => {
     regenerateMessage?.(item);
@@ -125,26 +169,47 @@ const MessageItem = ({
             ))}
 
           <section className="flex min-w-0 gap-2 flex-1 flex-col">
-            {isAssistant ? (
-              index !== 0 && (
-                <AssistantGroupButton
-                  messageId={item.id}
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                {isAssistant && hasThinking && (
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1 rounded-md border border-border-button px-2 py-1 text-xs text-text-secondary transition-colors hover:text-text-primary"
+                    onClick={() => setShowThinking((visible) => !visible)}
+                  >
+                    <Atom className="size-3.5" />
+                    {thinkingStatusLabel}
+                    {showThinking ? (
+                      <ChevronUp className="size-3.5" />
+                    ) : (
+                      <ChevronDown className="size-3.5" />
+                    )}
+                  </button>
+                )}
+              </div>
+              {isAssistant ? (
+                index !== 0 && (
+                  <AssistantGroupButton
+                    messageId={item.id}
+                    content={hasAnswerContent ? answerContent : messageContent}
+                    prompt={item.prompt}
+                    showLikeButton={showLikeButton}
+                    audioBinary={item.audio_binary}
+                    showLoudspeaker={showLoudspeaker}
+                  ></AssistantGroupButton>
+                )
+              ) : (
+                <UserGroupButton
                   content={item.content}
-                  prompt={item.prompt}
-                  showLikeButton={showLikeButton}
-                  audioBinary={item.audio_binary}
-                  showLoudspeaker={showLoudspeaker}
-                ></AssistantGroupButton>
-              )
-            ) : (
-              <UserGroupButton
-                content={item.content}
-                messageId={item.id}
-                removeMessageById={removeMessageById}
-                regenerateMessage={regenerateMessage && handleRegenerateMessage}
-                sendLoading={sendLoading}
-              ></UserGroupButton>
-            )}
+                  messageId={item.id}
+                  removeMessageById={removeMessageById}
+                  regenerateMessage={
+                    regenerateMessage && handleRegenerateMessage
+                  }
+                  sendLoading={sendLoading}
+                ></UserGroupButton>
+              )}
+            </div>
             {/* Show PDF download button if download info is present */}
             {pdfDownloadInfo && (
               <PDFDownloadButton
@@ -152,8 +217,18 @@ const MessageItem = ({
                 className="mb-2"
               />
             )}
+            {isAssistant && hasThinking && showThinking && (
+              <div className="rounded-lg border border-border-default/80 bg-bg-card px-3 py-2 text-text-secondary">
+                <MarkdownContent
+                  loading={loading}
+                  content={thinkingContent}
+                  reference={{ doc_aggs: [], chunks: [], total: 0 }}
+                  clickDocumentButton={clickDocumentButton}
+                ></MarkdownContent>
+              </div>
+            )}
             {/* Show message content if there's any text besides the download */}
-            {messageContent && (
+            {hasAnswerContent && (
               <div
                 className={cn(
                   isAssistant
@@ -166,7 +241,7 @@ const MessageItem = ({
               >
                 <MarkdownContent
                   loading={loading}
-                  content={messageContent}
+                  content={answerContent}
                   reference={reference}
                   clickDocumentButton={clickDocumentButton}
                 ></MarkdownContent>
@@ -175,7 +250,9 @@ const MessageItem = ({
             {isAssistant && (
               <ReferenceImageList
                 referenceChunks={reference.chunks}
-                messageContent={messageContent}
+                messageContent={
+                  hasAnswerContent ? answerContent : messageContent
+                }
               ></ReferenceImageList>
             )}
             {isAssistant && referenceDocumentList.length > 0 && (

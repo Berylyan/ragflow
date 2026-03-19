@@ -535,6 +535,7 @@ Quanto sopra è il contenuto che devi riassumere.`,
     },
     chat: {
       messagePlaceholder: 'Scrivi il tuo messaggio qui...',
+      thinking: 'pensare',
       exit: 'Esci',
       multipleModels: 'Modelli multipli',
       applyModelConfigs: 'Applica configurazioni modello',

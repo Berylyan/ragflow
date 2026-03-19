@@ -65,7 +65,7 @@ export default {
       signUpTitle: '创建账户',
       welcomeToLogin: '欢迎登录',
       welcomeToSignUp: '欢迎注册',
-      assistant: '智能办公助手',
+      assistant: '数字员工智能平台',
       login: '登录',
       signUp: '注册',
       gotoLogin: '去登录',
@@ -103,7 +103,7 @@ export default {
       welcome: '欢迎来到',
       dataset: '知识库',
       memories: '记忆',
-      assistant: '数字员工',
+      assistant: '数字员工智能平台',
       assistant_desc:
         '我能帮你管理海量资料、起草公文方案、精准检索信息，做你最靠谱的办公搭档！',
     },
@@ -683,6 +683,9 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
     },
     chat: {
       messagePlaceholder: '请输入消息...',
+      thinking: '深度思考',
+      reasoningInProgress: '思考中',
+      reasoningCompleted: '已思考',
       exit: '退出',
       multipleModels: '多模型',
       applyModelConfigs: '应用模型配置',

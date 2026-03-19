@@ -18,6 +18,8 @@ export interface Iknowledge {
   name: string;
   embd_id: string;
   parser_id: string;
+  pipeline_id?: string;
+  parseType?: number;
 }
 export const useSaveKnowledge = () => {
   const { visible: visible, hideModal, showModal } = useSetModalState();

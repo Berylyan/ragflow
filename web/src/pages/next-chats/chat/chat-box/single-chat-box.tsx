@@ -123,7 +123,7 @@ export function SingleChatBox({
         onUpload={handleUploadFile}
         isUploading={isUploading}
         removeFile={removeFile}
-        showReasoning
+        defaultEnableThinking
         showInternet={showInternet}
       />
       {visible && (

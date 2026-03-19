@@ -729,6 +729,9 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
     },
     chat: {
       messagePlaceholder: 'Type your message here...',
+      thinking: 'Thinking',
+      reasoningInProgress: 'Thinking',
+      reasoningCompleted: 'Thought',
       exit: 'Exit',
       multipleModels: 'Multiple models',
       applyModelConfigs: 'Apply model configs',
