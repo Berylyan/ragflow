@@ -38,7 +38,9 @@ i18n
   .use(LanguageDetector)
   .init({
     detection: {
+      order: ['localStorage'], // 只从 localStorage 检测，不读取浏览器语言
       lookupLocalStorage: 'lng',
+      caches: ['localStorage'],
     },
     supportedLngs: Object.values(LanguageAbbreviation),
     resources,
@@ -80,14 +82,18 @@ export const changeLanguageAsync = async (lng: string): Promise<void> => {
 };
 
 export const initLanguage = async (): Promise<void> => {
-  const currentLng =
-    i18n.language || localStorage.getItem('lng') || LanguageAbbreviation.Zh;
-  //const currentLng = i18n.language || localStorage.getItem('lng') || 'en';
+  // const currentLng = normalizeLanguageCode(
+  //   i18n.language || localStorage.getItem('lng') || LanguageAbbreviation.En,
+  // );
 
-  if (currentLng !== 'en' && languageImports[currentLng]) {
-    await loadLanguageAsync(currentLng);
-    await i18n.changeLanguage(currentLng);
+  // 新增：如果 localStorage 中没有语言设置，默认写入中文
+  if (!localStorage.getItem('lng')) {
+    localStorage.setItem('lng', 'zh');
   }
+
+  const currentLng = localStorage.getItem('lng') || LanguageAbbreviation.Zh;
+
+  await changeLanguageAsync(currentLng);
 };
 
 export default i18n;

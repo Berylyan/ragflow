@@ -42,10 +42,12 @@ const MarkdownContent = ({
   reference,
   clickDocumentButton,
   content,
+  showReference = true,
 }: {
   content: string;
   loading: boolean;
   reference: IReference;
+  showReference?: boolean;
   clickDocumentButton?: (documentId: string, chunk: IReferenceChunk) => void;
 }) => {
   const { t } = useTranslation();
@@ -67,8 +69,12 @@ const MarkdownContent = ({
 
   useEffect(() => {
     const docAggs = reference?.doc_aggs;
-    setDocumentIds(Array.isArray(docAggs) ? docAggs.map((x) => x.doc_id) : []);
-  }, [reference, setDocumentIds]);
+    setDocumentIds(
+      showReference && Array.isArray(docAggs)
+        ? docAggs.map((x) => x.doc_id)
+        : [],
+    );
+  }, [reference, setDocumentIds, showReference]);
 
   const handleDocumentButtonClick = useCallback(
     (
@@ -207,7 +213,11 @@ const MarkdownContent = ({
 
   const renderReference = useCallback(
     (text: string) => {
-      let replacedText = reactStringReplace(text, currentReg, (match, i) => {
+      if (!showReference) {
+        return text.replace(currentReg, '');
+      }
+
+      const replacedText = reactStringReplace(text, currentReg, (match, i) => {
         const chunkIndex = getChunkIndex(match);
 
         return (
@@ -226,7 +236,7 @@ const MarkdownContent = ({
 
       return replacedText;
     },
-    [getPopoverContent],
+    [getPopoverContent, showReference],
   );
 
   return (

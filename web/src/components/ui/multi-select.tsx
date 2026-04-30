@@ -307,6 +307,8 @@ export const MultiSelect = React.forwardRef<
                         className={cn(
                           isAnimating ? 'animate-bounce' : '',
                           'px-1',
+                          variant === 'inverted' &&
+                            'text-white [&_svg]:text-white',
                           multiSelectVariants({ variant }),
                         )}
                         style={{ animationDuration: `${animation}s` }}
@@ -334,6 +336,8 @@ export const MultiSelect = React.forwardRef<
                       className={cn(
                         'bg-transparent text-foreground border-foreground/1 hover:bg-transparent',
                         isAnimating ? 'animate-bounce' : '',
+                        variant === 'inverted' &&
+                          'text-white [&_svg]:text-white',
                         multiSelectVariants({ variant }),
                       )}
                       style={{ animationDuration: `${animation}s` }}

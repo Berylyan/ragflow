@@ -7,14 +7,9 @@ type IProps = {
 };
 const FlipCard3D = (props: IProps) => {
   const { children, isLoginPage } = props;
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(!isLoginPage);
   useEffect(() => {
-    console.log('title', isLoginPage);
-    if (isLoginPage) {
-      setIsFlipped(false);
-    } else {
-      setIsFlipped(true);
-    }
+    setIsFlipped(!isLoginPage);
   }, [isLoginPage]);
   const isBackfaceVisibilitySupported = () => {
     return (

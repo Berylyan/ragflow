@@ -70,6 +70,38 @@ export function replaceThinkToSection(text: string = '') {
   return result;
 }
 
+export const hasThinkingContent = (text: string = '') => {
+  return text.includes('<think>');
+};
+
+export const extractThinkingContent = (text: string = '') => {
+  const results: string[] = [];
+  let rest = text;
+
+  while (rest.includes('<think>')) {
+    const startIndex = rest.indexOf('<think>');
+    rest = rest.slice(startIndex + '<think>'.length);
+    const endIndex = rest.indexOf('</think>');
+
+    if (endIndex === -1) {
+      results.push(rest);
+      break;
+    }
+
+    results.push(rest.slice(0, endIndex));
+    rest = rest.slice(endIndex + '</think>'.length);
+  }
+
+  return results.join('\n\n');
+};
+
+export const removeThinkingContent = (text: string = '') => {
+  return text
+    .replace(/<think>[\s\S]*?<\/think>/g, '')
+    .replace(/<think>[\s\S]*$/g, '')
+    .replace(/<\/?think>/g, '');
+};
+
 export function setInitialChatVariableEnabledFieldValue(
   field: ChatVariableEnabledField,
 ) {

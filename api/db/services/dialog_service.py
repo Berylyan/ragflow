@@ -179,7 +179,7 @@ class DialogService(CommonService):
         return res
 
 
-async def async_chat_solo(dialog, messages, stream=True):
+async def async_chat_solo(dialog, messages, stream=True, **kwargs):
     llm_type = TenantLLMService.llm_id2llm_type(dialog.llm_id)
     attachments = ""
     image_attachments = []
@@ -203,6 +203,8 @@ async def async_chat_solo(dialog, messages, stream=True):
         chat_mdl = LLMBundle(dialog.tenant_id, LLMType.CHAT, dialog.llm_id)
 
     prompt_config = dialog.prompt_config
+    reasoning_enabled = kwargs["reasoning"] if "reasoning" in kwargs else prompt_config.get("reasoning", False)
+    gen_conf = deepcopy(dialog.llm_setting) if dialog.llm_setting else {}
     tts_mdl = None
     if prompt_config.get("tts"):
         tts_mdl = LLMBundle(dialog.tenant_id, LLMType.TTS)
@@ -213,9 +215,20 @@ async def async_chat_solo(dialog, messages, stream=True):
         convert_last_user_msg_to_multimodal(msg, image_attachments, factory)
     if stream:
         if llm_type == "chat":
-            stream_iter = chat_mdl.async_chat_streamly_delta(prompt_config.get("system", ""), msg, dialog.llm_setting)
+            stream_iter = chat_mdl.async_chat_streamly_delta(
+                prompt_config.get("system", ""),
+                msg,
+                gen_conf,
+                with_reasoning=reasoning_enabled,
+            )
         else:
-            stream_iter = chat_mdl.async_chat_streamly_delta(prompt_config.get("system", ""), msg, dialog.llm_setting, images=image_files)
+            stream_iter = chat_mdl.async_chat_streamly_delta(
+                prompt_config.get("system", ""),
+                msg,
+                gen_conf,
+                images=image_files,
+                with_reasoning=reasoning_enabled,
+            )
         async for kind, value, state in _stream_with_think_delta(stream_iter):
             if kind == "marker":
                 flags = {"start_to_think": True} if value == "<think>" else {"end_to_think": True}
@@ -224,9 +237,20 @@ async def async_chat_solo(dialog, messages, stream=True):
             yield {"answer": value, "reference": {}, "audio_binary": tts(tts_mdl, value), "prompt": "", "created_at": time.time(), "final": False}
     else:
         if llm_type == "chat":
-            answer = await chat_mdl.async_chat(prompt_config.get("system", ""), msg, dialog.llm_setting)
+            answer = await chat_mdl.async_chat(
+                prompt_config.get("system", ""),
+                msg,
+                gen_conf,
+                with_reasoning=reasoning_enabled,
+            )
         else:
-            answer = await chat_mdl.async_chat(prompt_config.get("system", ""), msg, dialog.llm_setting, images=image_files)
+            answer = await chat_mdl.async_chat(
+                prompt_config.get("system", ""),
+                msg,
+                gen_conf,
+                images=image_files,
+                with_reasoning=reasoning_enabled,
+            )
         user_content = msg[-1].get("content", "[content not available]")
         logging.debug("User: {}|Assistant: {}".format(user_content, answer))
         yield {"answer": answer, "reference": {}, "audio_binary": tts(tts_mdl, answer), "prompt": "", "created_at": time.time()}
@@ -412,7 +436,7 @@ async def async_chat(dialog, messages, stream=True, **kwargs):
     logging.debug("Begin async_chat")
     assert messages[-1]["role"] == "user", "The last content of this conversation is not from user."
     if not dialog.kb_ids and not dialog.prompt_config.get("tavily_api_key"):
-        async for ans in async_chat_solo(dialog, messages, stream):
+        async for ans in async_chat_solo(dialog, messages, stream, **kwargs):
             yield ans
         return
 
@@ -520,7 +544,8 @@ async def async_chat(dialog, messages, stream=True, **kwargs):
         logging.debug("Proceeding with retrieval")
         tenant_ids = list(set([kb.tenant_id for kb in kbs]))
         knowledges = []
-        if prompt_config.get("reasoning", False) or kwargs.get("reasoning"):
+        reasoning_enabled = kwargs["reasoning"] if "reasoning" in kwargs else prompt_config.get("reasoning", False)
+        if reasoning_enabled:
             reasoner = DeepResearcher(
                 chat_mdl,
                 prompt_config,
@@ -592,16 +617,19 @@ async def async_chat(dialog, messages, stream=True, **kwargs):
     logging.debug("{}->{}".format(" ".join(questions), "\n->".join(knowledges)))
 
     retrieval_ts = timer()
-    if not knowledges and prompt_config.get("empty_response"):
-        empty_res = prompt_config["empty_response"]
-        yield {"answer": empty_res, "reference": kbinfos, "prompt": "\n\n### Query:\n%s" % " ".join(questions),
-               "audio_binary": tts(tts_mdl, empty_res), "final": True}
-        return
-
     kwargs["knowledge"] = "\n------\n" + "\n\n------\n\n".join(knowledges)
-    gen_conf = dialog.llm_setting
+    reasoning_enabled = kwargs["reasoning"] if "reasoning" in kwargs else prompt_config.get("reasoning", False)
+    gen_conf = deepcopy(dialog.llm_setting) if dialog.llm_setting else {}
+    system_prompt = prompt_config["system"]
+    if not knowledges:
+        system_prompt += (
+            "\n\nNo relevant knowledge was retrieved for the current question. "
+            "Do not stop at the knowledge-base miss. "
+            "Provide the best helpful answer you can based on general knowledge and the conversation history. "
+            "If you are uncertain, say so clearly."
+        )
 
-    msg = [{"role": "system", "content": prompt_config["system"].format(**kwargs)+attachments_}]
+    msg = [{"role": "system", "content": system_prompt.format(**kwargs)+attachments_}]
     prompt4citation = ""
     if knowledges and (prompt_config.get("quote", True) and kwargs.get("quote", True)):
         prompt4citation = citation_prompt()
@@ -701,9 +729,20 @@ async def async_chat(dialog, messages, stream=True, **kwargs):
 
     if stream:
         if llm_type == "chat":
-            stream_iter = chat_mdl.async_chat_streamly_delta(prompt + prompt4citation, msg[1:], gen_conf)
+            stream_iter = chat_mdl.async_chat_streamly_delta(
+                prompt + prompt4citation,
+                msg[1:],
+                gen_conf,
+                with_reasoning=reasoning_enabled,
+            )
         else:
-            stream_iter = chat_mdl.async_chat_streamly_delta(prompt + prompt4citation, msg[1:], gen_conf, images=image_files)
+            stream_iter = chat_mdl.async_chat_streamly_delta(
+                prompt + prompt4citation,
+                msg[1:],
+                gen_conf,
+                images=image_files,
+                with_reasoning=reasoning_enabled,
+            )
         last_state = None
         async for kind, value, state in _stream_with_think_delta(stream_iter):
             last_state = state
@@ -721,9 +760,20 @@ async def async_chat(dialog, messages, stream=True, **kwargs):
             yield final
     else:
         if llm_type == "chat":
-            answer = await chat_mdl.async_chat(prompt + prompt4citation, msg[1:], gen_conf)
+            answer = await chat_mdl.async_chat(
+                prompt + prompt4citation,
+                msg[1:],
+                gen_conf,
+                with_reasoning=reasoning_enabled,
+            )
         else:
-            answer = await chat_mdl.async_chat(prompt + prompt4citation, msg[1:], gen_conf, images=image_files)
+            answer = await chat_mdl.async_chat(
+                prompt + prompt4citation,
+                msg[1:],
+                gen_conf,
+                images=image_files,
+                with_reasoning=reasoning_enabled,
+            )
         user_content = msg[-1].get("content", "[content not available]")
         logging.debug("User: {}|Assistant: {}".format(user_content, answer))
         res = decorate_answer(answer)

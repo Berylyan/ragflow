@@ -121,20 +121,12 @@ export function Header() {
   return (
     <div>
       <section className="py-5 px-14 flex justify-between items-center ">
-        <div className="flex items-center gap-2">
-          <img
-            src={'/logo.svg'}
-            alt="logo"
-            className="cursor-pointer"
-            onClick={handleLogoClick}
-          />
-          <span
-            className="text-2xl font-semibold text-gray-800"
-            style={{ fontFamily: 'Microsoft YaHei, sans-serif' }} // 指定微软雅黑
-          >
-            海跃数字员工
-          </span>
-        </div>
+        <img
+          src={'/logo_slogan.svg'}
+          alt="logo"
+          className="cursor-pointer h-[40px] w-auto"
+          onClick={handleLogoClick}
+        />
 
         <div className="flex items-center gap-5 text-text-badge">
           <DropdownMenu>

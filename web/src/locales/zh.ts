@@ -65,7 +65,7 @@ export default {
       signUpTitle: '创建账户',
       welcomeToLogin: '欢迎登录',
       welcomeToSignUp: '欢迎注册',
-      assistant: '智能办公助手',
+      assistant: '数字员工智能平台',
       login: '登录',
       signUp: '注册',
       gotoLogin: '去登录',
@@ -77,8 +77,8 @@ export default {
       passwordLabel: '密码',
       passwordPlaceholder: '请输入密码',
       rememberMe: '记住我',
-      signInTip: '没有帐户？',
-      signUpTip: '已经有帐户？',
+      signInTip: '没有账户？',
+      signUpTip: '已经有账户？',
       nicknameLabel: '名称',
       nicknamePlaceholder: '请输入名称',
       register: '创建账户',
@@ -103,7 +103,7 @@ export default {
       welcome: '欢迎来到',
       dataset: '知识库',
       memories: '记忆',
-      assistant: '数字员工',
+      assistant: '数字员工智能平台',
       assistant_desc:
         '我能帮你管理海量资料、起草公文方案、精准检索信息，做你最靠谱的办公搭档！',
     },
@@ -356,6 +356,7 @@ export default {
       topK: 'Top-K',
       topKTip: `与 Rerank 模型配合使用，用于设置传给 Rerank 模型的文本块数量。`,
       delimiter: `文本分段标识符`,
+      enableChildrenDelimiter: '子chunk用于检索',
       delimiterTip:
         '支持多字符作为分隔符，多字符用两个反引号 \\`\\` 分隔符包裹。若配置成：\\n`##`; 系统将首先使用换行符、两个#号以及分号先对文本进行分割，随后再对分得的小文本块按照「建议文本块大小」设定的大小进行拼装。在设置文本分段标识符前请确保理解上述文本分段切片机制。',
       html4excel: '表格转HTML',
@@ -394,6 +395,9 @@ export default {
       theDocumentBeingParsedCannotBeDeleted: '正在解析的文档不能被删除',
     },
     knowledgeConfiguration: {
+      globalIndexModelTip:
+        '用于生成知识图、RAPTOR、自动元数据、自动关键字和自动问题。模型性能将影响生成质量。',
+      globalIndexModel: '索引模型',
       settings: '设置',
       autoMetadataTip:
         '自动生成元数据。适用于解析新文件。现有文件需要重新解析才能更新（chunk将保留）。请注意，配置中指定的索引模型将消耗额外的 Token。',
@@ -434,6 +438,8 @@ export default {
       dataSource: '数据源',
       linkSourceSetTip: '管理与此数据集的数据源链接',
       linkDataSource: '链接数据源',
+      overlappedPercent: '重叠百分比（%）',
+      tocExtraction: 'Page Index',
       tocExtractionTip:
         '对于已有的chunk生成层级结构的目录信息（每个文件一个目录）。在查询时，激活`Page Index`后，系统会用大模型去判断用户问题和哪些目录项相关，从而找到相关的chunk。',
       deleteGenerateModalContent: `
@@ -683,6 +689,9 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
     },
     chat: {
       messagePlaceholder: '请输入消息...',
+      thinking: '深度思考',
+      reasoningInProgress: '思考中',
+      reasoningCompleted: '已思考',
       exit: '退出',
       multipleModels: '多模型',
       applyModelConfigs: '应用模型配置',
@@ -944,7 +953,7 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       save: '保存',
       search: '搜索',
       availableModels: '可选模型',
-      profile: '概要',
+      profile: '设置',
       avatar: '头像',
       avatarTip: '这会在你的个人主页展示',
       profileDescription: '在此更新您的照片和个人详细信息。',

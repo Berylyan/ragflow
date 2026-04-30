@@ -12,6 +12,7 @@ import authorizationUtil from './utils/authorization-util';
 export enum Routes {
   Root = '/',
   Login = '/login-next',
+  Register = '/inter-register',
   Logout = '/logout',
   Home = '/home',
   Datasets = '/datasets',
@@ -111,6 +112,11 @@ const routeConfigOptions = [
   },
   {
     path: '/login-next',
+    Component: () => import('@/pages/login-next'),
+    layout: false,
+  },
+  {
+    path: Routes.Register,
     Component: () => import('@/pages/login-next'),
     layout: false,
   },
@@ -370,7 +376,7 @@ const routeConfigOptions = [
     children: [
       {
         path: '/user-setting',
-        element: <Navigate to={`/user-setting${Routes.DataSource}`} replace />,
+        element: <Navigate to={`/user-setting${Routes.Profile}`} replace />,
       },
       {
         path: '/user-setting/profile',

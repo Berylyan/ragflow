@@ -34,7 +34,7 @@ const DocumentViewer = () => {
   }
 
   return (
-    <section className="w-full h-full">
+    <section className="w-full h-full min-h-dvh bg-white">
       {Images.includes(ext!) && (
         <div className="flex w-full h-full items-center justify-center">
           {/* <Image src={api} preview={false}></Image> */}

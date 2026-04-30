@@ -6,6 +6,7 @@ import { ImageWithPopover } from '@/components/image';
 import { Input } from '@/components/originui/input';
 import { SkeletonCard } from '@/components/skeleton-card';
 import { Button } from '@/components/ui/button';
+import message from '@/components/ui/message';
 import {
   Popover,
   PopoverContent,
@@ -14,10 +15,11 @@ import {
 import { RAGFlowPagination } from '@/components/ui/ragflow-pagination';
 import { IReference } from '@/interfaces/database/chat';
 import { cn } from '@/lib/utils';
+import { downloadDocument } from '@/utils/file-util';
 import DOMPurify from 'dompurify';
 import { isEmpty } from 'lodash';
-import { BrainCircuit, Search, X } from 'lucide-react';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { ArrowDownToLine, BrainCircuit, Search, X } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ISearchAppDetailProps } from '../next-searches/hooks';
 import PdfDrawer from './document-preview-modal';
@@ -27,7 +29,6 @@ import MarkdownContent from './markdown-content';
 import MindMapDrawer from './mindmap-drawer';
 import RetrievalDocuments from './retrieval-documents';
 export default function SearchingView({
-  setIsSearching,
   searchData,
   handleClickRelatedQuestion,
   handleTestChunk,
@@ -56,7 +57,6 @@ export default function SearchingView({
   pagination,
   onChange,
 }: ISearchReturnProps & {
-  setIsSearching?: Dispatch<SetStateAction<boolean>>;
   searchData: ISearchAppDetailProps;
 }) {
   const { t } = useTranslation();
@@ -72,16 +72,29 @@ export default function SearchingView({
   useEffect(() => {
     setSearchtext(searchStr);
   }, [searchStr, setSearchtext]);
+
+  const handleDownloadDocument = useCallback(
+    async (documentId: string, filename: string) => {
+      try {
+        await downloadDocument({ id: documentId, filename });
+      } catch (error) {
+        console.error('Failed to download document:', error);
+        message.error('Download failed');
+      }
+    },
+    [],
+  );
+
   return (
     <section
       className={cn(
-        'relative w-full flex transition-all justify-start items-center',
+        'relative flex w-full items-start justify-center transition-all',
       )}
     >
       {/* search header */}
       <div
         className={cn(
-          'relative z-10 px-8 pt-8 flex  text-transparent justify-start items-start w-full',
+          'relative z-10 flex w-full justify-center px-6 pb-8 pt-8 lg:px-10',
         )}
       >
         {/* <h1
@@ -96,11 +109,11 @@ export default function SearchingView({
         </h1> */}
         <div
           className={cn(
-            ' rounded-lg text-primary text-xl sticky flex flex-col justify-center w-2/3 max-w-[780px] transform scale-100 ml-16 ',
+            'flex w-full max-w-[1440px] flex-col justify-center rounded-lg text-primary text-xl',
           )}
         >
-          <div className={cn('flex flex-col justify-start items-start w-full')}>
-            <div className="relative w-full text-primary">
+          <div className={cn('flex w-full flex-col items-start justify-start')}>
+            <div className="relative mx-auto w-full max-w-[960px] text-primary">
               <Input
                 placeholder={t('search.searchGreeting')}
                 className={cn(
@@ -150,7 +163,7 @@ export default function SearchingView({
           </div>
           {/* search body */}
           <div
-            className="w-full mt-5 overflow-auto scrollbar-none "
+            className="mx-auto mt-8 w-full max-w-[1360px] overflow-auto px-2 scrollbar-none md:px-4 lg:px-8"
             style={{ height: 'calc(100vh - 250px)' }}
           >
             {searchData.search_config.summary && !isSearchStrEmpty && (
@@ -218,7 +231,7 @@ export default function SearchingView({
                                       }...`,
                                     ),
                                   }}
-                                  className="text-sm text-text-primary mb-1"
+                                  className="mb-1 text-base leading-8 text-text-primary"
                                 ></div>
                               </PopoverTrigger>
                               <PopoverContent className="text-text-primary !w-full max-w-lg ">
@@ -230,14 +243,35 @@ export default function SearchingView({
                               </PopoverContent>
                             </Popover>
                           </div>
-                          <div
-                            className="flex gap-2 items-center text-xs text-text-secondary border p-1 rounded-lg w-fit mt-3"
-                            onClick={() =>
-                              clickDocumentButton(chunk.doc_id, chunk as any)
-                            }
-                          >
-                            <FileIcon name={chunk.docnm_kwd}></FileIcon>
-                            {chunk.docnm_kwd}
+                          <div className="mt-3 flex w-fit max-w-full items-center gap-2 rounded-lg border border-border-default bg-bg-card/70 p-1">
+                            <button
+                              type="button"
+                              className="flex min-w-0 cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm text-text-secondary transition-colors hover:text-text-primary"
+                              onClick={() =>
+                                clickDocumentButton(chunk.doc_id, chunk as any)
+                              }
+                            >
+                              <FileIcon name={chunk.docnm_kwd}></FileIcon>
+                              <span className="truncate">
+                                {chunk.docnm_kwd}
+                              </span>
+                            </button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 cursor-pointer gap-1 px-2 text-xs text-text-secondary hover:text-text-primary"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                void handleDownloadDocument(
+                                  chunk.doc_id,
+                                  chunk.docnm_kwd,
+                                );
+                              }}
+                            >
+                              <ArrowDownToLine className="size-3.5" />
+                              {t('common.download')}
+                            </Button>
                           </div>
                         </div>
                         {index < chunks.length - 1 && (
@@ -290,7 +324,7 @@ export default function SearchingView({
           </div>
 
           {total > 0 && (
-            <div className="mt-8 px-8 pb-8 text-base">
+            <div className="mx-auto mt-8 w-full max-w-[1360px] px-2 pb-8 text-base md:px-4 lg:px-8">
               <RAGFlowPagination
                 current={pagination.current}
                 pageSize={pagination.pageSize}
@@ -301,7 +335,7 @@ export default function SearchingView({
           )}
         </div>
         {mindMapVisible && (
-          <div className="flex-1 h-[88dvh] z-30 ml-32 mt-5">
+          <div className="z-30 ml-8 mt-5 hidden h-[88dvh] w-[360px] xl:block">
             <MindMapDrawer
               visible={mindMapVisible}
               hideModal={hideMindMapModal}

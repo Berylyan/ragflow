@@ -55,14 +55,9 @@ RUN --mount=type=cache,id=ragflow_apt,target=/var/cache/apt,sharing=locked \
     apt install -y fonts-freefont-ttf fonts-noto-cjk && \
     apt install -y postgresql-client
 
-ARG NGINX_VERSION=1.29.5-1~noble
 RUN --mount=type=cache,id=ragflow_apt,target=/var/cache/apt,sharing=locked \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /etc/apt/keyrings/nginx-archive-keyring.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/mainline/ubuntu/ noble nginx" > /etc/apt/sources.list.d/nginx.list && \
     apt update && \
-    apt install -y nginx=${NGINX_VERSION} && \
-    apt-mark hold nginx
+    apt install -y nginx
 
 # Install uv
 RUN --mount=type=bind,from=infiniflow/ragflow_deps:latest,source=/,target=/deps \
@@ -111,18 +106,11 @@ RUN cargo --version && rustc --version
 # macOS ARM64 environment, install msodbcsql18.
 # general x86_64 environment, install msodbcsql17.
 RUN --mount=type=cache,id=ragflow_apt,target=/var/cache/apt,sharing=locked \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" > /etc/apt/sources.list.d/mssql-release.list && \
     apt update && \
-    arch="$(uname -m)"; \
-    if [ "$arch" = "arm64" ] || [ "$arch" = "aarch64" ]; then \
-        # ARM64 (macOS/Apple Silicon or Linux aarch64) \
-        ACCEPT_EULA=Y apt install -y unixodbc-dev msodbcsql18; \
-    else \
-        # x86_64 or others \
-        ACCEPT_EULA=Y apt install -y unixodbc-dev msodbcsql17; \
-    fi || \
-    { echo "Failed to install ODBC driver"; exit 1; }
+    ACCEPT_EULA=Y apt install -y unixodbc-dev msodbcsql18 || \
+    echo "WARNING: ODBC driver installation skipped"
 
 
 
@@ -158,11 +146,11 @@ COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,id=ragflow_uv,target=/root/.cache/uv,sharing=locked \
     if [ "$NEED_MIRROR" == "1" ]; then \
         sed -i 's|pypi.org|pypi.tuna.tsinghua.edu.cn|g' uv.lock; \
+        git config --global url."https://ghfast.top/https://github.com/".insteadOf "https://github.com/"; \
     else \
         sed -i 's|pypi.tuna.tsinghua.edu.cn|pypi.org|g' uv.lock; \
     fi; \
-    uv sync --python 3.12 --frozen && \
-    # Ensure pip is available in the venv for runtime package installation (fixes #12651)
+    UV_HTTP_TIMEOUT=300 uv sync --python 3.12 --frozen && \
     .venv/bin/python3 -m ensurepip --upgrade
 
 COPY web web

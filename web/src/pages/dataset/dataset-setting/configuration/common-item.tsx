@@ -58,6 +58,7 @@ interface IProps {
   isEdit?: boolean;
   label?: string;
   name?: string;
+  showTooltip?: boolean;
 }
 export function ChunkMethodItem(props: IProps) {
   const { line } = props;
@@ -121,7 +122,7 @@ export const EmbeddingSelect = ({
   const oldValue = useMemo(() => {
     const embdStr = form.getValues(name || 'embd_id');
     return embdStr || '';
-  }, [form]);
+  }, [form, name]);
   const [loading, setLoading] = useState(false);
   return (
     <Spin
@@ -154,7 +155,11 @@ export const EmbeddingSelect = ({
   );
 };
 
-export function EmbeddingModelItem({ line = 1, isEdit }: IProps) {
+export function EmbeddingModelItem({
+  line = 1,
+  isEdit,
+  showTooltip = true,
+}: IProps) {
   const { t } = useTranslate('knowledgeConfiguration');
   const form = useFormContext();
   const disabled = useHasParsedDocument(isEdit);
@@ -173,7 +178,7 @@ export function EmbeddingModelItem({ line = 1, isEdit }: IProps) {
             >
               <FormLabel
                 required
-                tooltip={t('embeddingModelTip')}
+                tooltip={showTooltip ? t('embeddingModelTip') : undefined}
                 className={cn('text-sm  whitespace-wrap ', {
                   'w-1/4': line === 1,
                 })}

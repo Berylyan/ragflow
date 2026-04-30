@@ -48,6 +48,7 @@ export function SingleChatBox({
   } = useSendMessage(controller);
   const { data: userInfo } = useFetchUserInfo();
   const { data: currentDialog } = useFetchDialog();
+  const showReference = currentDialog?.prompt_config?.quote !== false;
   const { createConversationBeforeUploadDocument } =
     useCreateConversationBeforeUploadDocument();
   const { conversationId } = useGetChatSearchParams();
@@ -101,6 +102,7 @@ export function SingleChatBox({
                 removeMessageById={removeMessageById}
                 regenerateMessage={regenerateMessage}
                 sendLoading={sendLoading}
+                showReference={showReference}
               ></MessageItem>
             );
           })}
@@ -123,7 +125,7 @@ export function SingleChatBox({
         onUpload={handleUploadFile}
         isUploading={isUploading}
         removeFile={removeFile}
-        showReasoning
+        defaultEnableThinking
         showInternet={showInternet}
       />
       {visible && (

@@ -66,7 +66,7 @@ export const useNavigatePage = () => {
   }, [navigate]);
 
   const navigateToOldProfile = useCallback(() => {
-    navigate(Routes.UserSetting);
+    navigate(`${Routes.UserSetting}${Routes.Profile}`);
   }, [navigate]);
 
   const navigateToChatList = useCallback(() => {

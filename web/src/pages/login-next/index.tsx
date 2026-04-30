@@ -10,7 +10,7 @@ import { useSystemConfig } from '@/hooks/use-system-request';
 import { rsaPsw } from '@/utils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Button, ButtonLoading } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -30,8 +30,15 @@ import { z } from 'zod';
 import FlipCard3D from './card';
 import './index.less';
 
+const LOGIN_PATH = '/login';
+const REGISTER_PATH = '/inter-register';
+const showRegisterEntryOnLogin = false;
+
 const Login = () => {
-  const [title, setTitle] = useState('login');
+  const location = useLocation();
+  const [title, setTitle] = useState(
+    location.pathname === REGISTER_PATH ? 'register' : 'login',
+  );
   const navigate = useNavigate();
   const { login, loading: signLoading } = useLogin();
   const { register, loading: registerLoading } = useRegister();
@@ -39,7 +46,7 @@ const Login = () => {
   const { login: loginWithChannel, loading: loginWithChannelLoading } =
     useLoginWithChannel();
   const { t } = useTranslation('translation', { keyPrefix: 'login' });
-  const [isLoginPage, setIsLoginPage] = useState(true);
+  const isLoginPage = title === 'login';
 
   const loading =
     signLoading ||
@@ -48,6 +55,10 @@ const Login = () => {
     loginWithChannelLoading;
   const { config } = useSystemConfig();
   const registerEnabled = config?.registerEnabled !== 0;
+
+  useEffect(() => {
+    setTitle(location.pathname === REGISTER_PATH ? 'register' : 'login');
+  }, [location.pathname]);
 
   const { isLogin } = useAuth();
   useEffect(() => {
@@ -60,15 +71,14 @@ const Login = () => {
     await loginWithChannel(channel);
   };
 
-  const changeTitle = () => {
-    setIsLoginPage(title !== 'login');
-    if (title === 'login' && !registerEnabled) {
-      return;
+  const navigateToRegister = () => {
+    if (registerEnabled) {
+      navigate(REGISTER_PATH);
     }
+  };
 
-    setTimeout(() => {
-      setTitle(title === 'login' ? 'register' : 'login');
-    }, 200);
+  const navigateToLogin = () => {
+    navigate(LOGIN_PATH);
   };
 
   const FormSchema = z
@@ -120,11 +130,11 @@ const Login = () => {
           password: rsaPassWord,
         });
         if (code === 0) {
-          setTitle('login');
+          navigate(LOGIN_PATH);
         }
       }
-    } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
+    } catch {
+      // Request hooks show user-facing errors.
     }
   };
 
@@ -133,27 +143,12 @@ const Login = () => {
       <div className="min-h-screen w-full bg-[url('/login_bg.png')] bg-cover flex flex-col relative overflow-hidden">
         {/* 顶部 Logo 区域 */}
         <div className="absolute top-5 left-14 flex items-center gap-2">
-          <img src={'/logo.svg'} alt="logo" />
-          <span
-            className="text-2xl font-bold text-gray-800"
-            style={{ fontFamily: 'Microsoft YaHei, sans-serif' }} // 指定微软雅黑
-          >
-            海跃数字员工
-          </span>
-        </div>
-
-        {/* <div className="py-5 px-14  flex items-center gap-2">
           <img
-            src={'/logo.svg'}
+            src={'/logo_slogan.svg'}
             alt="logo"
+            className="h-[40px] w-auto"
           />
-          <span
-            className="text-2xl font-bold text-gray-800"
-            style={{ fontFamily: 'Microsoft YaHei, sans-serif' }} // 指定微软雅黑
-          >
-            海跃数字员工
-          </span>
-        </div> */}
+        </div>
 
         <div className="flex flex-row items-center justify-center gap-2 z-10 my-[175px]">
           <img
@@ -162,15 +157,18 @@ const Login = () => {
             className="w-[170px] aspect-[1.37] object-cover"
           />
 
-          <h1 className="text-[clamp(1.1rem,5vw,1.6rem)] font-bold text-gray-800 leading-tight text-center ">
-            {t('assistant')}
-          </h1>
-          <img
-            src={'/logo_name.svg'}
-            alt="海小豹"
-            className="inline-block align-baseline h-[36px] w-auto relative"
-            // 进阶：align-baseline 对齐文字基线 + top 微调
-          />
+          <div className="flex flex-row gap-1">
+            <img
+              src={'/logo_name.svg'}
+              alt="海小豹"
+              className="inline-block align-baseline h-[36px] w-auto relative"
+              // 进阶：align-baseline 对齐文字基线 + top 微调
+            />
+
+            <h1 className="text-[clamp(1.1rem,5vw,1.6rem)] font-bold text-gray-800 leading-tight text-center ">
+              {t('assistant')}
+            </h1>
+          </div>
         </div>
 
         {/* 登录卡片主体 */}
@@ -178,7 +176,7 @@ const Login = () => {
           {/* Login Form */}
           <FlipCard3D isLoginPage={isLoginPage}>
             <div className="flex flex-col items-center justify-center w-full">
-              <div className=" w-full max-w-[540px] bg-bg-component backdrop-blur-sm rounded-2xl shadow-xl pt-7 pl-10 pr-10 pb-2 border border-border-button ">
+              <div className=" w-full max-w-[540px] bg-bg-component backdrop-blur-sm rounded-2xl shadow-xl pt-7 pl-10 pr-10 pb-4 border border-border-button ">
                 <div className="text-center mb-[25px]">
                   <p className="text-gray-600 text-lg mt-2 max-w-2xl">
                     {title === 'login'
@@ -326,27 +324,29 @@ const Login = () => {
                   </form>
                 </Form>
 
-                {title === 'login' && registerEnabled && (
-                  <div className="mt-3 text-right">
-                    <p className="text-text-disabled text-sm">
-                      {t('signInTip')}
-                      <Button
-                        variant={'transparent'}
-                        onClick={changeTitle}
-                        className="text-accent-primary/90 hover:text-blue-600 text-blue-600 hover:underline font-medium border-none"
-                      >
-                        {t('gotoSignUp')}
-                      </Button>
-                    </p>
-                  </div>
-                )}
+                {title === 'login' &&
+                  registerEnabled &&
+                  showRegisterEntryOnLogin && (
+                    <div className="mt-3 text-right">
+                      <p className="text-text-disabled text-sm">
+                        {t('signInTip')}
+                        <Button
+                          variant={'transparent'}
+                          onClick={navigateToRegister}
+                          className="text-accent-primary/90 hover:text-blue-600 text-blue-600 hover:underline font-medium border-none"
+                        >
+                          {t('gotoSignUp')}
+                        </Button>
+                      </p>
+                    </div>
+                  )}
                 {title === 'register' && (
                   <div className="mt-3 text-right">
                     <p className="text-text-disabled text-sm">
                       {t('signUpTip')}
                       <Button
                         variant={'transparent'}
-                        onClick={changeTitle}
+                        onClick={navigateToLogin}
                         className="text-accent-primary/90 hover:text-blue-600 text-blue-600 hover:underline font-medium border-none"
                       >
                         {t('gotoLogin')}

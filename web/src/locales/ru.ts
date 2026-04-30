@@ -555,6 +555,7 @@ export default {
     },
     chat: {
       messagePlaceholder: 'Введите ваше сообщение здесь...',
+      thinking: 'мышление',
       exit: 'Выход',
       multipleModels: 'Несколько моделей',
       applyModelConfigs: 'Применить настройки моделей',

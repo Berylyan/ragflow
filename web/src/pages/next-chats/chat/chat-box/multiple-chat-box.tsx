@@ -101,6 +101,7 @@ const ChatCard = forwardRef(function ChatCard(
 
   const { data: userInfo } = useFetchUserInfo();
   const { data: currentDialog } = useFetchDialog();
+  const showReference = currentDialog?.prompt_config?.quote !== false;
 
   useSetDefaultModel(form);
 
@@ -190,6 +191,7 @@ const ChatCard = forwardRef(function ChatCard(
                   regenerateMessage={regenerateMessage}
                   sendLoading={sendLoading}
                   clickDocumentButton={clickDocumentButton}
+                  showReference={showReference}
                 ></MessageItem>
               );
             })}
